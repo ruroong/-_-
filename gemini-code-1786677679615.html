@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>루룽찌 아카이브 | RURONG ARCHIVE</title>
+  <style>
+    /* 어둡고 깔끔한 아카이브 감성 스타일 */
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Pretendard', sans-serif;
+      margin: 0; padding: 0 20px;
+    }
+    header {
+      padding: 30px 0;
+      border-bottom: 1px solid #333;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo { font-weight: bold; font-size: 1.2rem; letter-spacing: 1px; }
+    .nav-links a { color: #888; margin-left: 20px; text-decoration: none; }
+    .nav-links a:hover { color: #fff; }
+    
+    section { margin: 50px 0; }
+    h2 { font-size: 1rem; color: #888; border-bottom: 1px solid #222; padding-bottom: 10px; }
+    
+    /* 캐릭터 카드 레이아웃 */
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px; margin-top: 20px;
+    }
+    .card {
+      background: #1e1e1e; border: 1px solid #333;
+      border-radius: 12px; padding: 15px; text-align: center;
+      transition: transform 0.2s; cursor: pointer;
+    }
+    .card:hover { transform: translateY(-5deg); border-color: #666; }
+    .card-img { width: 100%; height: 180px; background: #2a2a2a; border-radius: 8px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">✦ RURONG ARCHIVE</div>
+    <nav class="nav-links">
+      <a href="#profile">PROFILE</a>
+      <a href="#characters">CHARACTERS</a>
+      <a href="#feed">FEED</a>
+      <a href="#guestbook">GUESTBOOK</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="profile">
+      <h2>PROFILE & NOTICE</h2>
+      <h1>루룽찌 (@ruroon._.g)</h1>
+      <p>루룽찌의 캐릭터와 작품 세계관을 모아두는 공식 아카이브입니다.</p>
+    </section>
+
+    <section id="characters">
+      <h2>CHARACTERS</h2>
+      <div class="character-grid">
+        <div class="card">
+          <div class="card-img"></div>
+          <h3>캐릭터 이름 1</h3>
+          <p style="font-size:0.8rem; color:#888;">한 줄 설명</p>
+        </div>
+        <!-- 캐릭터 카드가 늘어나는 곳 -->
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>
