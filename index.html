@@ -1,253 +1,424 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>루룽찌 아카이브 💫</title>
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --cover-bg: #fcebe1; /* 상단 따뜻한 베이지 커버 */
-            --card-bg: #ffffff;
-            --card-hover: #faf8f5;
-            --text-main: #37352f;
-            --text-sub: #787774;
-            --border-color: #e9e9e8;
-            
-            /* 노션 스타일 태그 색상 */
-            --tag-yellow: #fdecc8;
-            --tag-yellow-text: #8f6300;
-            --tag-pink: #ffe2dd;
-            --tag-pink-text: #c04532;
-            --tag-beige: #f1f0ef;
-            --tag-beige-text: #5a5a5a;
-            --tag-blue: #e0f2fe;
-            --tag-blue-text: #0369a1;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RUROON ARCHIVE .✦</title>
+  
+  <!-- 레트로/키치한 폰트 불러오기 (Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Zen+Dots&display=swap" rel="stylesheet">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
+  <style>
+    /* ==========================================
+       1. ROOT VARS & BASIC RESET
+       ========================================== */
+    :root {
+      --bg-pink: #ECA8B9;
+      --navy-dark: #1C2038;
+      --navy-light: #2C3352;
+      --white-oval: #FFFFFF;
+      --accent-lilac: #D3C6EB;
+      --font-digital: 'VT323', monospace;
+      --font-title: 'Zen Dots', cursive;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 80px;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
 
-        /* 1. 상단 커버 영역 */
-        .cover {
-            height: 180px;
-            background-color: var(--cover-bg);
-            width: 100%;
-        }
+    body {
+      background-color: var(--bg-pink);
+      color: var(--navy-dark);
+      font-family: var(--font-digital);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      overflow-x: hidden;
+      cursor: crosshair; /* 레트로 느낌의 십자 커서 */
+    }
 
-        /* 2. 메인 컨테이너 */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 24px;
-            position: relative;
-        }
+    /* ==========================================
+       2. HEADER / MUSIC PLAYER UI
+       ========================================== */
+    header {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+    }
 
-        /* 3. 프로필 아이콘 & 타이틀 */
-        .header-icon {
-            font-size: 52px;
-            margin-top: -36px;
-            margin-bottom: 12px;
-            display: inline-block;
-        }
+    .top-dots {
+      display: flex;
+      gap: 12px;
+    }
 
-        .title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
+    .dot {
+      width: 14px;
+      height: 14px;
+      background-color: var(--navy-dark);
+      border-radius: 50%;
+    }
 
-        .subtitle {
-            font-size: 14px;
-            color: var(--text-sub);
-            margin-bottom: 24px;
-        }
+    .player-center {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
 
-        /* 콜아웃 상자 (노란색 팁 상자) */
-        .callout {
-            background-color: #fbf5e8;
-            border-radius: 8px;
-            padding: 12px 16px;
-            font-size: 14px;
-            color: #4a4031;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 32px;
-        }
+    /* 지구본 회전 애니메이션 */
+    .globe-icon {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--navy-dark);
+      border-radius: 50%;
+      position: relative;
+      animation: spin 8s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-        /* 카테고리 헤더 */
-        .section-header {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 28px 0 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+    .globe-icon::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 12px;
+      border: 2px solid var(--navy-dark);
+      border-radius: 50%;
+    }
 
-        /* 4. 갤러리 카드 그리드 */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 16px;
-        }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
-        .card {
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            background: var(--card-bg);
-            overflow: hidden;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-        }
+    /* ==========================================
+       3. MAIN HERO / ORBIT DESIGN (중앙 궤도)
+       ========================================== */
+    main {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 40px 0;
+      position: relative;
+    }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.06);
-            background: var(--card-hover);
-        }
+    /* 마우스 호버 시 입체적으로 기우는 컨테이너 */
+    .hero-container {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease-out;
+    }
 
-        .card-preview {
-            height: 120px;
-            background-color: #f7f6f3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            border-bottom: 1px solid #f0f0f0;
-        }
+    /* 타원 배경 */
+    .oval-bg {
+      background-color: var(--white-oval);
+      width: 95%;
+      height: 110px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 0px rgba(28, 32, 56, 0.15);
+      position: relative;
+      z-index: 1;
+    }
 
-        .card-body {
-            padding: 14px;
-        }
+    /* 메인 타이틀 */
+    .main-title {
+      font-family: var(--font-title);
+      font-size: 3.2rem;
+      color: var(--navy-dark);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      text-align: center;
+    }
 
-        .card-title {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+    /* 타이틀 주변을 감싸는 3D 궤도 선 */
+    .orbit-ring {
+      position: absolute;
+      width: 105%;
+      height: 160px;
+      border: 3px solid var(--navy-dark);
+      border-radius: 50%;
+      transform: rotate(-12deg);
+      pointer-events: none;
+      z-index: 2;
+    }
 
-        /* 태그 스타일 */
-        .tag-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
+    /* 궤도 위 반짝이는 별/커서 아이콘 */
+    .sparkle {
+      position: absolute;
+      font-size: 1.8rem;
+      color: var(--navy-dark);
+      animation: pulse 1.5s infinite alternate;
+    }
 
-        .tag {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
+    .sparkle.top-right { top: -20px; right: 15%; }
+    .sparkle.cursor-icon { bottom: -10px; right: 8%; transform: rotate(-20deg); }
 
-        .tag-yellow { background: var(--tag-yellow); color: var(--tag-yellow-text); }
-        .tag-pink { background: var(--tag-pink); color: var(--tag-pink-text); }
-        .tag-beige { background: var(--tag-beige); color: var(--tag-beige-text); }
-        .tag-blue { background: var(--tag-blue); color: var(--tag-blue-text); }
+    @keyframes pulse {
+      from { transform: scale(0.9); opacity: 0.7; }
+      to { transform: scale(1.2); opacity: 1; }
+    }
 
-        /* 구분선 */
-        hr {
-            border: none;
-            border-top: 1px solid var(--border-color);
-            margin: 32px 0;
-        }
-    </style>
+    .sub-title {
+      margin-top: 15px;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+    }
+
+    .quote-box {
+      margin-top: 50px;
+      text-align: center;
+      position: relative;
+    }
+
+    .quote-box .heart {
+      font-size: 0.9rem;
+      margin: 0 6px;
+    }
+
+    .quote-text {
+      font-size: 1.2rem;
+      margin-top: 5px;
+      opacity: 0.85;
+    }
+
+    /* ==========================================
+       4. FOOTER / BARCODE & CONTROLS
+       ========================================== */
+    footer {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+    }
+
+    /* 네비게이션 / 사각형 제어 버튼들 */
+    .controls-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--navy-dark);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .btn-icon:hover {
+      transform: scale(1.2);
+    }
+
+    .pixel-box {
+      width: 32px;
+      height: 32px;
+      background-color: var(--navy-light);
+      border: 2px solid var(--navy-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 2px 2px 0px var(--navy-dark);
+    }
+
+    .pixel-box:active {
+      transform: translate(2px, 2px);
+      box-shadow: 0px 0px 0px;
+    }
+
+    .pixel-box.heart-box {
+      background-color: var(--white-oval);
+      color: var(--navy-dark);
+    }
+
+    /* 바코드 섹션 */
+    .bottom-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .barcode-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* CSS로 만드는 레트로 바코드 */
+    .barcode {
+      display: flex;
+      height: 45px;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .bar { background-color: var(--navy-dark); height: 100%; }
+    .w-1 { width: 2px; }
+    .w-2 { width: 5px; }
+    .w-3 { width: 8px; }
+
+    .barcode-num {
+      font-size: 1.1rem;
+      margin-top: 4px;
+      letter-spacing: 3px;
+    }
+
+    /* 플러스 버튼 (아카이브 레이어로 이동하는 버튼) */
+    .plus-btn {
+      width: 45px;
+      height: 45px;
+      border: 2px solid var(--navy-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.2s;
+    }
+
+    .plus-btn:hover {
+      background: var(--navy-dark);
+      color: var(--bg-pink);
+    }
+  </style>
 </head>
 <body>
 
-    <!-- 상단 뽀용 커버 -->
-    <div class="cover"></div>
+  <!-- 1. 상단 뮤직 플레이어 UI -->
+  <header>
+    <div class="top-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <div class="player-center">
+      <span>0:00</span>
+      <div class="globe-icon"></div>
+      <span>0:00</span>
+    </div>
+    <div class="top-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  </header>
 
-    <div class="container">
-        <!-- 프로필 헤더 -->
-        <div class="header-icon">💫</div>
-        <h1 class="title">루룽찌</h1>
-        <p class="subtitle">나의 캐릭터 & 세계관 아카이브 (っ' Modern ')っ</p>
-
-        <!-- 안내 콜아웃 -->
-        <div class="callout">
-            💡 <span>태그 · B컷 · 서비스컷 등 이것저것 모아두는 공간입니다!</span>
-        </div>
-
-        <hr>
-
-        <!-- 세션 1: 벨라토_VELATO -->
-        <div class="section-header">
-            <span>🔻 벨라토_VELATO</span>
-        </div>
-        
-        <div class="card-grid">
-            <!-- 캐릭터 카드 1 -->
-            <div class="card">
-                <div class="card-preview">🖼️</div>
-                <div class="card-body">
-                    <div class="card-title">네로 NERO</div>
-                    <div class="tag-group">
-                        <span class="tag tag-beige">벨라토_VELATO</span>
-                        <span class="tag tag-pink">죄와 구원의 혼배성사</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 캐릭터 카드 2 -->
-            <div class="card">
-                <div class="card-preview">🖼️</div>
-                <div class="card-body">
-                    <div class="card-title">리오 RIO</div>
-                    <div class="tag-group">
-                        <span class="tag tag-beige">벨라토_VELATO</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 세션 2: 묘연 -->
-        <div class="section-header" style="margin-top: 40px;">
-            <span>🔻 묘연</span>
-        </div>
-
-        <div class="card-grid">
-            <!-- 캐릭터 카드 3 -->
-            <div class="card">
-                <div class="card-preview">☁️</div>
-                <div class="card-body">
-                    <div class="card-title">류온</div>
-                    <div class="tag-group">
-                        <span class="tag tag-yellow">비상 ! 전남친 긴급 관리 발령 ? !</span>
-                        <span class="tag tag-pink">너의 눈물을 위해</span>
-                        <span class="tag tag-beige">묘연</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 캐릭터 카드 4 -->
-            <div class="card">
-                <div class="card-preview">🌧️</div>
-                <div class="card-body">
-                    <div class="card-title">남건우</div>
-                    <div class="tag-group">
-                        <span class="tag tag-beige">묘연</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+  <!-- 2. 중앙 메인 타이틀 & 궤도 -->
+  <main>
+    <div class="hero-container" id="hero">
+      <div class="orbit-ring"></div>
+      <div class="sparkle top-right">✦</div>
+      <div class="sparkle cursor-icon">➔</div>
+      
+      <div class="oval-bg">
+        <h1 class="main-title">. TRAVEL JOURNAL</h1>
+      </div>
     </div>
 
+    <p class="sub-title">Design for @ ruroon._.g_</p>
+
+    <div class="quote-box">
+      <p><span class="heart">♥</span> LOVERSLEPORINELADYMART <span class="heart">♥</span></p>
+      <p class="quote-text">The world is a book and those who do not travel read only a page.</p>
+    </div>
+  </main>
+
+  <!-- 3. 하단 컨트롤러 & 바코드 -->
+  <footer>
+    <div class="controls-row">
+      <button class="btn-icon">☰</button>
+      <button class="btn-icon">⏮</button>
+      <div class="pixel-box">✕</div>
+      <div class="pixel-box heart-box">♥</div>
+      <div class="pixel-box">✕</div>
+      <div class="pixel-box">✕</div>
+      <div class="pixel-box heart-box">♥</div>
+      <div class="pixel-box">✕</div>
+      <div class="pixel-box">✕</div>
+      <button class="btn-icon">⏭</button>
+    </div>
+
+    <div class="bottom-bar">
+      <!-- 왼쪽 바코드 -->
+      <div class="barcode-container">
+        <div class="barcode">
+          <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-3"></div>
+          <div class="bar w-1"></div><div class="bar w-2"></div><div class="bar w-1"></div>
+          <div class="bar w-3"></div><div class="bar w-1"></div>
+        </div>
+        <span class="barcode-num">1010295</span>
+      </div>
+
+      <!-- 우측 플러스 버튼 -->
+      <div class="plus-btn" title="Open Archive">+</div>
+
+      <!-- 오른쪽 바코드 -->
+      <div class="barcode-container">
+        <div class="barcode">
+          <div class="bar w-1"></div><div class="bar w-3"></div><div class="bar w-1"></div>
+          <div class="bar w-2"></div><div class="bar w-1"></div><div class="bar w-3"></div>
+          <div class="bar w-2"></div><div class="bar w-1"></div>
+        </div>
+        <span class="barcode-num">1010295</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 4. INTERACTIVE JAVASCRIPT -->
+  <script>
+    // 마우스 위치에 따라 중앙 타이틀이 부드럽게 입체 반응하는 효과 (Tilt)
+    const hero = document.getElementById('hero');
+
+    document.addEventListener('mousemove', (e) => {
+      const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+      const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+      
+      hero.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+    });
+
+    // 마우스가 화면을 벗어나면 제자리로
+    document.addEventListener('mouseleave', () => {
+      hero.style.transform = `rotateY(0deg) rotateX(0deg)`;
+    });
+
+    // 버튼 클릭 시 소리 또는 반응 (확장용)
+    document.querySelectorAll('button, .pixel-box, .plus-btn').forEach(element => {
+      element.addEventListener('click', () => {
+        // 나중에 클릭 효과음(Sound Effect) 추가 가능!
+        element.style.transform = 'scale(0.9)';
+        setTimeout(() => element.style.transform = '', 100);
+      });
+    });
+  </script>
 </body>
 </html>
