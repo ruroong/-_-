@@ -16,6 +16,8 @@
       --pink: #ECA8B9;
       --navy: #1C2038;
       --navy-light: #2C3352;
+      --purple: #4A3E6D;
+      --purple-light: #8E78B2;
       --white: #FFFFFF;
       --line: rgba(28, 32, 56, 0.45);
       --shadow: 0 8px 0 rgba(28, 32, 56, 0.12);
@@ -48,7 +50,7 @@
     }
 
     a { color: inherit; text-decoration: none; }
-    button { font: inherit; color: inherit; cursor: pointer; }
+    button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; }
     .container { width: min(1180px, calc(100% - 42px)); margin: auto; }
     .mono { font-family: var(--mono); }
 
@@ -60,32 +62,22 @@
     .corner.tl { left: 16px; top: 16px; border-right: 0; border-bottom: 0; }
     .corner.br { right: 16px; bottom: 16px; border-left: 0; border-top: 0; }
 
-    /* ✨ [애니메이션 1] 둥둥 떠다니는 모션 */
+    /* ANIMATIONS */
     @keyframes float {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-12px) rotate(1.5deg); }
-      100% { transform: translateY(0px) rotate(0deg); }
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
     }
 
-    /* ✨ [애니메이션 2] 별 반짝반짝 모션 */
     @keyframes twinkle {
       0%, 100% { opacity: 0.2; transform: scale(0.8); }
       50% { opacity: 1; transform: scale(1.2); }
     }
 
-    /* 배경에 떠다니는 픽셀 별 오브젝트들 */
-    .star-decor {
-      position: absolute;
-      pointer-events: none;
-      font-family: var(--mono);
-      color: var(--navy);
-      z-index: 5;
-      animation: twinkle 2.5s infinite ease-in-out;
+    /* 궤도 회전 애니메이션 */
+    @keyframes spinOrbit {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
     }
-    .star-1 { top: 15%; left: 10%; animation-delay: 0s; font-size: 18px; }
-    .star-2 { top: 25%; right: 12%; animation-delay: 0.8s; font-size: 24px; }
-    .star-3 { top: 65%; left: 8%; animation-delay: 1.5s; font-size: 14px; }
-    .star-4 { top: 70%; right: 15%; animation-delay: 0.4s; font-size: 20px; }
 
     /* ---------- HEADER ---------- */
     header {
@@ -120,58 +112,134 @@
     }
 
     /* ---------- PAGE VIEW SYSTEM ---------- */
-    .page-section { display: none; padding: 60px 0; min-height: calc(100vh - 70px); }
+    .page-section { display: none; padding: 50px 0; min-height: calc(100vh - 70px); }
     .page-section.active-page { display: block; }
 
     /* ---------- SIGNAL (HOME) ---------- */
     .hero {
-      min-height: 520px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      position: relative; text-align: center; margin-bottom: 40px;
+      position: relative; text-align: center; margin-bottom: 30px;
     }
     
-    /* ✨ 메인 비주얼 상자에 둥둥 떠다니는 float 애니메이션 적용! */
+    /* SIGNAL 전용 반짝이는 배경 별 */
+    .signal-star {
+      position: absolute; pointer-events: none; font-family: var(--mono);
+      color: var(--navy); z-index: 5; animation: twinkle 2s infinite ease-in-out;
+    }
+    .s-star-1 { top: 5%; left: 12%; font-size: 20px; animation-delay: 0s; }
+    .s-star-2 { top: 12%; right: 15%; font-size: 26px; animation-delay: 0.7s; }
+    .s-star-3 { bottom: 10%; left: 8%; font-size: 16px; animation-delay: 1.3s; }
+    .s-star-4 { bottom: 15%; right: 10%; font-size: 22px; animation-delay: 0.4s; }
+
+    /* 회전하는 궤도 컨테이너 */
+    .orbit-wrapper {
+      position: relative;
+      width: min(700px, 85vw);
+      height: 320px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 20px 0;
+    }
+
+    .orbit-line {
+      position: absolute;
+      width: 100%; height: 100%;
+      border: 1.5px dashed rgba(28, 32, 56, 0.4);
+      border-radius: 50%;
+      transform: rotateX(72deg) rotateY(-12deg);
+      animation: spinOrbit 25s linear infinite;
+      pointer-events: none;
+    }
+
+    /* 궤도를 따라 도는 작은 별들 */
+    .orbit-star {
+      position: absolute; font-size: 14px; color: var(--navy);
+    }
+    .os-1 { top: -8px; left: 50%; animation: twinkle 1.5s infinite; }
+    .os-2 { bottom: -8px; left: 50%; animation: twinkle 2s infinite 0.5s; }
+
     .ps-main-visual {
-      width: min(850px, 90vw); min-height: 280px;
+      width: min(520px, 80vw); height: 240px;
       border: 2px dashed var(--line); border-radius: 12px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      position: relative; background: rgba(255, 255, 255, 0.15); margin: 24px 0;
-      animation: float 5s infinite ease-in-out; /* 둥둥 모션 */
-      box-shadow: 0 12px 30px rgba(28, 32, 56, 0.08);
+      position: relative; background: rgba(255, 255, 255, 0.25);
+      animation: float 6s infinite ease-in-out;
+      box-shadow: 0 10px 25px rgba(28, 32, 56, 0.08); z-index: 2;
+      backdrop-filter: blur(4px);
     }
-    .ps-main-visual img { width: 100%; height: auto; display: block; border-radius: 10px; }
-    .ps-placeholder { font-family: var(--mono); font-size: 12px; opacity: 0.6; padding: 40px; }
+    .ps-placeholder { font-family: var(--mono); font-size: 11px; opacity: 0.6; padding: 20px; }
 
-    /* 메인 비주얼 주변 귀여운 장식 별 */
-    .ps-main-visual::before {
-      content: "✦"; position: absolute; top: -16px; left: -12px;
-      font-size: 22px; color: var(--navy); animation: twinkle 2s infinite ease-in-out;
+    .hero-title { font-size: clamp(36px, 5.5vw, 68px); font-weight: 800; line-height: 0.95; letter-spacing: -0.06em; }
+    .hero-sub { font: 11px var(--mono); margin-top: 14px; opacity: 0.8; line-height: 1.6; }
+
+    /* ---------- Y2K CASSETTE PLAYER (SIGNAL 전용) ---------- */
+    .cassette-section {
+      width: min(580px, 92vw); margin: 35px auto 0;
+      background: var(--purple); border: 2.5px solid var(--navy);
+      border-radius: 20px; padding: 20px; color: var(--white);
+      box-shadow: 0 10px 0 var(--navy); position: relative;
     }
-    .ps-main-visual::after {
-      content: "✧"; position: absolute; bottom: -16px; right: -12px;
-      font-size: 26px; color: var(--navy); animation: twinkle 3s infinite ease-in-out 1s;
+    .cassette-top {
+      background: #2D2545; border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;
+    }
+    .now-playing-label { font: 9px var(--mono); color: #C4B5FD; letter-spacing: 0.1em; }
+    .track-title { font: 16px var(--digital); color: #5EEAD4; margin-top: 4px; letter-spacing: 0.05em; }
+    
+    .cassette-body {
+      background: #3B3258; border: 2px solid var(--navy); border-radius: 12px;
+      padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+    .wheels { display: flex; justify-content: space-around; width: 100%; align-items: center; }
+    .wheel {
+      width: 50px; height: 50px; border: 3px solid #C4B5FD; border-radius: 50%;
+      background: radial-gradient(circle, #2D2545 40%, #514475 41%);
+      position: relative; animation: spinOrbit 4s linear infinite paused;
+    }
+    .wheel.playing { animation-play-state: running; }
+    .wheel::after {
+      content: ""; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: 14px; height: 14px; background: #C4B5FD; border-radius: 50%;
     }
 
-    .hero-title { font-size: clamp(38px, 6vw, 76px); font-weight: 800; line-height: 0.95; letter-spacing: -0.06em; }
-    .hero-sub { font: 12px var(--mono); margin-top: 18px; opacity: 0.8; line-height: 1.6; }
+    .controls { display: flex; gap: 10px; }
+    .ctrl-btn {
+      background: var(--purple-light); border: 1.5px solid var(--navy);
+      color: var(--white); padding: 6px 14px; border-radius: 6px; font: 10px var(--mono);
+      box-shadow: 0 3px 0 var(--navy); cursor: pointer; transition: 0.1s;
+    }
+    .ctrl-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--navy); }
+
+    .playlist-mini { display: flex; flex-direction: column; gap: 6px; width: 100%; margin-top: 10px; }
+    .p-item {
+      background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 8px 12px; border-radius: 8px; font: 11px var(--mono);
+      display: flex; justify-content: space-between; cursor: pointer; transition: 0.2s;
+    }
+    .p-item:hover, .p-item.active { background: rgba(255, 255, 255, 0.25); color: #5EEAD4; }
 
     /* External Links */
-    .external-signal {
-      margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 14px;
-    }
+    .external-signal { margin-top: 35px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
     .ext-title { font: 10px var(--mono); letter-spacing: 0.2em; opacity: 0.7; }
-    .ext-buttons { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .ext-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .ext-btn {
       background: var(--white); border: 1.5px solid var(--navy);
-      padding: 12px 22px; font: 11px var(--mono); font-weight: 500;
+      padding: 10px 20px; font: 11px var(--mono); font-weight: 500;
       box-shadow: var(--shadow); transition: 0.2s; display: flex; align-items: center; gap: 8px;
     }
-    .ext-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 0 rgba(28, 32, 56, 0.15); }
+    .ext-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 0 rgba(28, 32, 56, 0.15); }
 
-    /* ---------- COMMON HEADERS ---------- */
+    /* ---------- COMMON HEADERS (페이지명 옆에만 별 반짝) ---------- */
     .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
     .section-kicker { font: 10px var(--mono); letter-spacing: 0.18em; margin-bottom: 6px; opacity: 0.7; }
-    .section-title { font-size: clamp(32px, 5vw, 54px); font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+    .section-title {
+      font-size: clamp(32px, 5vw, 54px); font-weight: 800; line-height: 1; letter-spacing: -0.05em;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    /* 페이지 제목 옆 포인트 별 */
+    .title-star {
+      font-size: 20px; color: var(--navy); display: inline-block;
+      animation: twinkle 1.8s infinite ease-in-out;
+    }
     .section-note { font: 10px var(--mono); text-align: right; opacity: 0.75; line-height: 1.6; }
 
     /* ---------- WORLD SECTION ---------- */
@@ -182,7 +250,7 @@
     }
     .world-card:hover { transform: translateY(-4px); }
     .world-num { font: 10px var(--mono); opacity: 0.5; }
-    .world-title { font-size: 26px; font-weight: 800; margin-top: 30px; letter-spacing: -0.04em; }
+    .world-title { font-size: 26px; font-weight: 800; margin-top: 25px; letter-spacing: -0.04em; }
     .world-desc { font-size: 11px; margin-top: 8px; opacity: 0.7; line-height: 1.6; }
 
     /* ---------- CHARACTERS SECTION ---------- */
@@ -214,7 +282,7 @@
     }
     .music-info h4 { font-size: 15px; font-weight: 700; }
     .music-info p { font: 10px var(--mono); opacity: 0.6; margin-top: 2px; }
-    .play-btn { font: 12px var(--mono); padding: 6px 12px; border: 1px solid var(--navy); }
+    .play-btn { font: 11px var(--mono); padding: 6px 12px; border: 1px solid var(--navy); background: rgba(236, 168, 185, 0.3); }
 
     /* ---------- FEED SECTION ---------- */
     .view-toggle { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 16px; }
@@ -227,7 +295,7 @@
     }
     .feed-container.grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
     .feed-container.grid-view .feed-card {
-      background: var(--white); border: 1px solid var(--navy); padding: 18px; min-height: 160px; box-shadow: var(--shadow);
+      background: var(--white); border: 1px solid var(--navy); padding: 18px; min-height: 150px; box-shadow: var(--shadow);
     }
     .feed-date { font: 10px var(--mono); opacity: 0.5; }
     .feed-title { font-size: 15px; font-weight: 700; margin-top: 6px; }
@@ -235,22 +303,18 @@
 
     /* ---------- NOTICE SECTION ---------- */
     .notice-list { display: flex; flex-direction: column; gap: 10px; }
-    .notice-item {
-      background: rgba(255,255,255,0.4); border: 1px solid var(--navy); padding: 18px;
-    }
+    .notice-item { background: rgba(255,255,255,0.4); border: 1px solid var(--navy); padding: 18px; }
     .notice-item h4 { font-size: 14px; font-weight: 700; }
     .notice-item p { font-size: 11px; opacity: 0.75; margin-top: 4px; line-height: 1.6; }
 
     /* ---------- FOOTER ---------- */
-    footer {
-      background: var(--navy); color: var(--white); padding: 50px 0 25px; margin-top: 60px;
-    }
+    footer { background: var(--navy); color: var(--white); padding: 45px 0 25px; margin-top: 60px; }
     .footer-main { display: flex; justify-content: space-between; align-items: flex-end; }
-    .footer-title { font-size: clamp(28px, 4vw, 48px); font-weight: 800; line-height: 0.95; letter-spacing: -0.06em; }
+    .footer-title { font-size: clamp(26px, 4vw, 44px); font-weight: 800; line-height: 0.95; letter-spacing: -0.06em; }
     .footer-title small { display: block; font: 10px var(--mono); opacity: 0.5; margin-bottom: 8px; letter-spacing: 0.15em; }
     .footer-right { text-align: right; font: 10px var(--mono); opacity: 0.7; line-height: 1.8; }
     .footer-bottom {
-      margin-top: 40px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: 35px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.2);
       display: flex; justify-content: space-between; font: 9px var(--mono); opacity: 0.5;
     }
 
@@ -266,17 +330,10 @@
 </head>
 
 <body>
-  <!-- 화면 모서리 포인트 -->
   <div class="corner tl"></div>
   <div class="corner br"></div>
 
-  <!-- ✨ 반짝이는 배경 별 요소들 -->
-  <div class="star-decor star-1">✦</div>
-  <div class="star-decor star-2">✧</div>
-  <div class="star-decor star-3">✦</div>
-  <div class="star-decor star-4">✧</div>
-
-  <!-- 상단 네비게이션 -->
+  <!-- HEADER -->
   <header>
     <div class="container nav">
       <a class="brand" href="#" onclick="switchPage('signal'); return false;">ruroon<span>._.g</span></a>
@@ -295,14 +352,26 @@
 
     <!-- 1. SIGNAL (HOME) -->
     <section id="page-signal" class="page-section active-page">
+      <!-- SIGNAL 전용 배경 별들 -->
+      <div class="signal-star s-star-1">✦</div>
+      <div class="signal-star s-star-2">✧</div>
+      <div class="signal-star s-star-3">✦</div>
+      <div class="signal-star s-star-4">✧</div>
+
       <div class="hero">
         <h1 class="hero-title">ruroon<span style="letter-spacing:-0.12em">._.g</span><br>ARCHIVE</h1>
         
-        <!-- ★ 포토샵 메인 비주얼 이미지 들어갈 상자 (둥둥 모션 적용됨) ★ -->
-        <div class="ps-main-visual" id="hero-visual">
-          <div class="ps-placeholder">
-            ✦ [포토샵 메인 비주얼 이미지 들어갈 자리] ✦<br>
-            (완성된 PNG 이미지를 올린 뒤 코드에서 불러오면 됩니다)
+        <!-- 회전하는 궤도 & 메인 비주얼 -->
+        <div class="orbit-wrapper">
+          <div class="orbit-line">
+            <span class="orbit-star os-1">✦</span>
+            <span class="orbit-star os-2">✧</span>
+          </div>
+          <div class="ps-main-visual" id="hero-visual">
+            <div class="ps-placeholder">
+              ✦ [포토샵 메인 비주얼 이미지 들어갈 자리] ✦<br>
+              (완성된 PNG 이미지를 올린 뒤 코드에서 불러오면 됩니다)
+            </div>
           </div>
         </div>
 
@@ -310,18 +379,48 @@
           characters, stories, worlds and fragments.<br>
           a small digital cabinet created by ruroon._.g
         </p>
+      </div>
 
-        <!-- EXTERNAL SIGNAL -->
-        <div class="external-signal">
-          <span class="ext-title">EXTERNAL SIGNAL</span>
-          <div class="ext-buttons">
-            <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
-              <span>OPEN KAKAO</span> ↗
-            </a>
-            <a href="https://notion.so/" target="_blank" class="ext-btn">
-              <span>NOTION DATABASE</span> ↗
-            </a>
+      <!-- Y2K CASSETTE PLAYER -->
+      <div class="cassette-section">
+        <div class="cassette-top">
+          <div class="now-playing-label">NOW PLAYING</div>
+          <div class="track-title" id="current-track-name">01. RYUON - MAIN THEME.mp3</div>
+        </div>
+        <div class="cassette-body">
+          <div class="wheels">
+            <div class="wheel" id="wheel-left"></div>
+            <div class="wheel" id="wheel-right"></div>
           </div>
+          <div class="controls">
+            <button class="ctrl-btn" onclick="prevTrack()">|◄◄</button>
+            <button class="ctrl-btn" onclick="togglePlay()" id="play-btn">PLAY ▶</button>
+            <button class="ctrl-btn" onclick="nextTrack()">►►|</button>
+          </div>
+          <div class="playlist-mini">
+            <div class="p-item active" onclick="selectTrack(0)">
+              <span>• RYUON - MAIN THEME</span><span>3:12</span>
+            </div>
+            <div class="p-item" onclick="selectTrack(1)">
+              <span>• VELATO - MILANO NIGHT</span><span>2:45</span>
+            </div>
+            <div class="p-item" onclick="selectTrack(2)">
+              <span>• FRONTIS2042 - ECHOES</span><span>4:01</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- EXTERNAL SIGNAL -->
+      <div class="external-signal">
+        <span class="ext-title">EXTERNAL SIGNAL</span>
+        <div class="ext-buttons">
+          <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
+            <span>OPEN KAKAO</span> ↗
+          </a>
+          <a href="https://notion.so/" target="_blank" class="ext-btn">
+            <span>NOTION DATABASE</span> ↗
+          </a>
         </div>
       </div>
     </section>
@@ -331,7 +430,7 @@
       <div class="section-head">
         <div>
           <p class="section-kicker">01 / WORLDS</p>
-          <h2 class="section-title">WORLD</h2>
+          <h2 class="section-title">WORLD <span class="title-star">✦</span></h2>
         </div>
         <p class="section-note">places, eras and settings<br>where the stories exist.</p>
       </div>
@@ -360,7 +459,7 @@
       <div class="section-head">
         <div>
           <p class="section-kicker">02 / DATABASE</p>
-          <h2 class="section-title">CHARACTERS</h2>
+          <h2 class="section-title">CHARACTERS <span class="title-star">✧</span></h2>
         </div>
         <p class="section-note">selected records<br>from the archive.</p>
       </div>
@@ -401,7 +500,7 @@
       <div class="section-head">
         <div>
           <p class="section-kicker">03 / SOUND</p>
-          <h2 class="section-title">MUSIC</h2>
+          <h2 class="section-title">MUSIC <span class="title-star">✦</span></h2>
         </div>
         <p class="section-note">songs connected to<br>characters and worlds.</p>
       </div>
@@ -429,7 +528,7 @@
       <div class="section-head">
         <div>
           <p class="section-kicker">04 / LOG</p>
-          <h2 class="section-title">FEED</h2>
+          <h2 class="section-title">FEED <span class="title-star">✧</span></h2>
         </div>
         <p class="section-note">latest fragments<br>and daily logs.</p>
       </div>
@@ -462,7 +561,7 @@
       <div class="section-head">
         <div>
           <p class="section-kicker">05 / INFORMATION</p>
-          <h2 class="section-title">NOTICE</h2>
+          <h2 class="section-title">NOTICE <span class="title-star">✦</span></h2>
         </div>
         <p class="section-note">archive updates &amp;<br>announcements.</p>
       </div>
@@ -499,6 +598,7 @@
   </footer>
 
   <script>
+    // 페이지 전환
     function switchPage(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
       document.querySelectorAll('.navlinks a').forEach(a => a.classList.remove('active'));
@@ -516,6 +616,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // 캐릭터 필터링
     function filterChar(category) {
       const cards = document.querySelectorAll('.char-card');
       const buttons = document.querySelectorAll('.filter-btn');
@@ -532,6 +633,7 @@
       });
     }
 
+    // 피드 뷰 토글
     function setFeedView(viewType) {
       const container = document.getElementById('feed-container');
       const btnList = document.getElementById('btn-list-view');
@@ -546,6 +648,55 @@
         btnList.classList.add('active');
         btnGrid.classList.remove('active');
       }
+    }
+
+    // 카세트 플레이어 JS
+    let isPlaying = false;
+    let currentTrack = 0;
+    const tracks = [
+      "01. RYUON - MAIN THEME.mp3",
+      "02. VELATO - MILANO NIGHT.mp3",
+      "03. FRONTIS2042 - ECHOES.mp3"
+    ];
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      const playBtn = document.getElementById('play-btn');
+      const wheelL = document.getElementById('wheel-left');
+      const wheelR = document.getElementById('wheel-right');
+
+      if(isPlaying) {
+        playBtn.innerText = "PAUSE ❚❚";
+        wheelL.classList.add('playing');
+        wheelR.classList.add('playing');
+      } else {
+        playBtn.innerText = "PLAY ▶";
+        wheelL.classList.remove('playing');
+        wheelR.classList.remove('playing');
+      }
+    }
+
+    function selectTrack(idx) {
+      currentTrack = idx;
+      document.getElementById('current-track-name').innerText = tracks[currentTrack];
+      
+      const items = document.querySelectorAll('.p-item');
+      items.forEach((item, i) => {
+        if(i === idx) item.classList.add('active');
+        else item.classList.remove('active');
+      });
+
+      if(!isPlaying) togglePlay();
+    }
+
+    function nextTrack() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      selectTrack(currentTrack);
+    }
+
+    function prevTrack() {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      selectTrack(currentTrack);
     }
   </script>
 </body>
