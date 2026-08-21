@@ -32,6 +32,7 @@
       font-family: var(--sans);
       min-height: 100vh;
       overflow-x: hidden;
+      position: relative;
     }
 
     /* 도트 패턴 오버레이 */
@@ -58,6 +59,33 @@
     }
     .corner.tl { left: 16px; top: 16px; border-right: 0; border-bottom: 0; }
     .corner.br { right: 16px; bottom: 16px; border-left: 0; border-top: 0; }
+
+    /* ✨ [애니메이션 1] 둥둥 떠다니는 모션 */
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(1.5deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* ✨ [애니메이션 2] 별 반짝반짝 모션 */
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* 배경에 떠다니는 픽셀 별 오브젝트들 */
+    .star-decor {
+      position: absolute;
+      pointer-events: none;
+      font-family: var(--mono);
+      color: var(--navy);
+      z-index: 5;
+      animation: twinkle 2.5s infinite ease-in-out;
+    }
+    .star-1 { top: 15%; left: 10%; animation-delay: 0s; font-size: 18px; }
+    .star-2 { top: 25%; right: 12%; animation-delay: 0.8s; font-size: 24px; }
+    .star-3 { top: 65%; left: 8%; animation-delay: 1.5s; font-size: 14px; }
+    .star-4 { top: 70%; right: 15%; animation-delay: 0.4s; font-size: 20px; }
 
     /* ---------- HEADER ---------- */
     header {
@@ -86,10 +114,13 @@
     }
     .navlinks a:hover::after, .navlinks a.active::after { width: 100%; }
     .status { justify-self: end; display: flex; align-items: center; gap: 8px; font: 11px var(--mono); }
-    .status i { width: 7px; height: 7px; border-radius: 50%; background: var(--navy); }
+    .status i {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--navy);
+      animation: twinkle 1.5s infinite ease-in-out;
+    }
 
-    /* ---------- PAGE VIEW SYSTEM (페이지 이동) ---------- */
-    .page-section { display: none; padding: 80px 0; min-height: calc(100vh - 70px); }
+    /* ---------- PAGE VIEW SYSTEM ---------- */
+    .page-section { display: none; padding: 60px 0; min-height: calc(100vh - 70px); }
     .page-section.active-page { display: block; }
 
     /* ---------- SIGNAL (HOME) ---------- */
@@ -98,22 +129,33 @@
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       position: relative; text-align: center; margin-bottom: 40px;
     }
-    /* 포토샵 이미지 들어갈 메인 비주얼 영역 */
+    
+    /* ✨ 메인 비주얼 상자에 둥둥 떠다니는 float 애니메이션 적용! */
     .ps-main-visual {
       width: min(850px, 90vw); min-height: 280px;
       border: 2px dashed var(--line); border-radius: 12px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      position: relative; background: rgba(255, 255, 255, 0.15); margin: 20px 0;
-      transition: transform 0.2s ease-out;
+      position: relative; background: rgba(255, 255, 255, 0.15); margin: 24px 0;
+      animation: float 5s infinite ease-in-out; /* 둥둥 모션 */
+      box-shadow: 0 12px 30px rgba(28, 32, 56, 0.08);
     }
-    /* 포토샵 이미지 교체용 img (기본은 가이드 텍스트) */
     .ps-main-visual img { width: 100%; height: auto; display: block; border-radius: 10px; }
     .ps-placeholder { font-family: var(--mono); font-size: 12px; opacity: 0.6; padding: 40px; }
+
+    /* 메인 비주얼 주변 귀여운 장식 별 */
+    .ps-main-visual::before {
+      content: "✦"; position: absolute; top: -16px; left: -12px;
+      font-size: 22px; color: var(--navy); animation: twinkle 2s infinite ease-in-out;
+    }
+    .ps-main-visual::after {
+      content: "✧"; position: absolute; bottom: -16px; right: -12px;
+      font-size: 26px; color: var(--navy); animation: twinkle 3s infinite ease-in-out 1s;
+    }
 
     .hero-title { font-size: clamp(38px, 6vw, 76px); font-weight: 800; line-height: 0.95; letter-spacing: -0.06em; }
     .hero-sub { font: 12px var(--mono); margin-top: 18px; opacity: 0.8; line-height: 1.6; }
 
-    /* External Links (외부 링크 버튼) */
+    /* External Links */
     .external-signal {
       margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 14px;
     }
@@ -143,7 +185,7 @@
     .world-title { font-size: 26px; font-weight: 800; margin-top: 30px; letter-spacing: -0.04em; }
     .world-desc { font-size: 11px; margin-top: 8px; opacity: 0.7; line-height: 1.6; }
 
-    /* ---------- CHARACTERS SECTION (필터 포함) ---------- */
+    /* ---------- CHARACTERS SECTION ---------- */
     .filter-bar { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
     .filter-btn {
       background: rgba(255, 255, 255, 0.3); border: 1px solid var(--navy);
@@ -174,12 +216,11 @@
     .music-info p { font: 10px var(--mono); opacity: 0.6; margin-top: 2px; }
     .play-btn { font: 12px var(--mono); padding: 6px 12px; border: 1px solid var(--navy); }
 
-    /* ---------- FEED SECTION (모아보기/리스트 토글) ---------- */
+    /* ---------- FEED SECTION ---------- */
     .view-toggle { display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 16px; }
     .toggle-btn { font: 10px var(--mono); padding: 4px 10px; border: 1px solid var(--navy); background: rgba(255,255,255,0.3); }
     .toggle-btn.active { background: var(--navy); color: var(--pink); }
 
-    /* 리스트 뷰 & 그리드 뷰 CSS */
     .feed-container.list-view { display: flex; flex-direction: column; gap: 12px; }
     .feed-container.list-view .feed-card {
       background: var(--white); border: 1px solid var(--navy); padding: 18px; display: flex; justify-content: space-between; align-items: center;
@@ -225,8 +266,15 @@
 </head>
 
 <body>
+  <!-- 화면 모서리 포인트 -->
   <div class="corner tl"></div>
   <div class="corner br"></div>
+
+  <!-- ✨ 반짝이는 배경 별 요소들 -->
+  <div class="star-decor star-1">✦</div>
+  <div class="star-decor star-2">✧</div>
+  <div class="star-decor star-3">✦</div>
+  <div class="star-decor star-4">✧</div>
 
   <!-- 상단 네비게이션 -->
   <header>
@@ -250,10 +298,8 @@
       <div class="hero">
         <h1 class="hero-title">ruroon<span style="letter-spacing:-0.12em">._.g</span><br>ARCHIVE</h1>
         
-        <!-- ★ 포토샵 메인 비주얼 이미지 교체 구역 ★ -->
+        <!-- ★ 포토샵 메인 비주얼 이미지 들어갈 상자 (둥둥 모션 적용됨) ★ -->
         <div class="ps-main-visual" id="hero-visual">
-          <!-- 포토샵 이미지 완성 후 아래 img 태그의 주소를 넣어주면 됩니다! -->
-          <!-- <img src="assets/main_visual.png" alt="ruroon archive main visual"> -->
           <div class="ps-placeholder">
             ✦ [포토샵 메인 비주얼 이미지 들어갈 자리] ✦<br>
             (완성된 PNG 이미지를 올린 뒤 코드에서 불러오면 됩니다)
@@ -265,15 +311,13 @@
           a small digital cabinet created by ruroon._.g
         </p>
 
-        <!-- EXTERNAL SIGNAL (오픈카톡, 노션 버튼) -->
+        <!-- EXTERNAL SIGNAL -->
         <div class="external-signal">
           <span class="ext-title">EXTERNAL SIGNAL</span>
           <div class="ext-buttons">
-            <!-- 오픈카카오톡 링크 연결 -->
             <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
               <span>OPEN KAKAO</span> ↗
             </a>
-            <!-- 노션 링크 연결 -->
             <a href="https://notion.so/" target="_blank" class="ext-btn">
               <span>NOTION DATABASE</span> ↗
             </a>
@@ -311,7 +355,7 @@
       </div>
     </section>
 
-    <!-- 3. CHARACTERS (필터링) -->
+    <!-- 3. CHARACTERS -->
     <section id="page-characters" class="page-section">
       <div class="section-head">
         <div>
@@ -321,7 +365,6 @@
         <p class="section-note">selected records<br>from the archive.</p>
       </div>
 
-      <!-- 상단 세계관/작품별 필터 버튼 -->
       <div class="filter-bar">
         <button class="filter-btn active" onclick="filterChar('all')">ALL</button>
         <button class="filter-btn" onclick="filterChar('velato')">VELATO</button>
@@ -381,7 +424,7 @@
       </div>
     </section>
 
-    <!-- 5. FEED (리스트 vs 모아보기) -->
+    <!-- 5. FEED -->
     <section id="page-feed" class="page-section">
       <div class="section-head">
         <div>
@@ -391,7 +434,6 @@
         <p class="section-note">latest fragments<br>and daily logs.</p>
       </div>
 
-      <!-- 뷰 전환 토글 -->
       <div class="view-toggle">
         <button class="toggle-btn active" id="btn-list-view" onclick="setFeedView('list')">☰ 리스트보기</button>
         <button class="toggle-btn" id="btn-grid-view" onclick="setFeedView('grid')">▦ 모아보기</button>
@@ -457,7 +499,6 @@
   </footer>
 
   <script>
-    // 1. 단일 페이지(SPA) 전환 시스템
     function switchPage(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
       document.querySelectorAll('.navlinks a').forEach(a => a.classList.remove('active'));
@@ -475,7 +516,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // 2. 캐릭터 필터링 기능
     function filterChar(category) {
       const cards = document.querySelectorAll('.char-card');
       const buttons = document.querySelectorAll('.filter-btn');
@@ -492,7 +532,6 @@
       });
     }
 
-    // 3. 피드 뷰 토글 기능 (리스트 vs 모아보기)
     function setFeedView(viewType) {
       const container = document.getElementById('feed-container');
       const btnList = document.getElementById('btn-list-view');
@@ -508,15 +547,6 @@
         btnGrid.classList.remove('active');
       }
     }
-
-    // 마우스 호버 시 3D Tilt 효과 (메인 비주얼)
-    const heroVisual = document.getElementById('hero-visual');
-    document.addEventListener('mousemove', (e) => {
-      if(!document.getElementById('page-signal').classList.contains('active-page')) return;
-      const xAxis = (window.innerWidth / 2 - e.pageX) / 40;
-      const yAxis = (window.innerHeight / 2 - e.pageY) / 40;
-      heroVisual.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-    });
   </script>
 </body>
 </html>
