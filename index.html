@@ -94,7 +94,6 @@
       position: relative;
     }
     
-    /* 사각별 이모지가 적용된 상단 브랜드 로고 */
     .brand { 
       font-weight: 800; 
       font-size: 15px; 
@@ -135,11 +134,11 @@
       min-height: calc(100vh - 120px); text-align: center; position: relative;
     }
     
-    /* 비주얼 위치 100px 상향 조정 */
+    /* 비주얼 위치 60px 하향 조정 (margin-top: 0px) */
     .hero-visual-wrapper {
       position: relative;
       width: min(650px, 90vw);
-      margin-top: -60px; /* 기존 대비 100px 높임 */
+      margin-top: 0px; 
       display: flex;
       justify-content: center;
       align-items: center;
@@ -166,11 +165,11 @@
       animation: orbit-tilt 6s infinite ease-in-out;
     }
 
-    /* 기존 버튼 위치로 배치된 메인 메뉴 */
+    /* 이미지와의 간격을 50px로 확대 */
     .main-navlinks {
       display: flex; gap: 28px;
       font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
-      margin-top: 10px;
+      margin-top: 50px;
     }
     .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
     .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
@@ -180,7 +179,7 @@
     }
     .main-navlinks a:hover::after, .main-navlinks a.active::after { width: 100%; }
 
-    /* 맨 아래로 배치된 외부 링크 버튼 */
+    /* 외부 링크 버튼 */
     .external-signal-bottom {
       margin-top: auto;
       padding-bottom: 20px;
@@ -282,7 +281,7 @@
 
     @media (max-width: 768px) {
       .status { display: none; }
-      .main-navlinks { gap: 16px; font-size: 11px; }
+      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 30px; }
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .section-note { text-align: left; }
       .footer-main { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -311,13 +310,13 @@
         
         <div></div> <!-- 상단 여백 밸런스용 -->
 
-        <!-- 메인 비주얼 (100px 위로 배치) -->
+        <!-- 메인 비주얼 -->
         <div class="hero-visual-wrapper">
           <img src="./images/A02.png" alt="orbit" class="orbit-bg-img">
           <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
         </div>
 
-        <!-- 이미지 바로 아래로 이동한 메인 네비게이션 -->
+        <!-- 이미지 아래 간격을 확보한 메인 네비게이션 -->
         <nav class="main-navlinks">
           <a href="#" onclick="switchPage('world'); return false;" id="nav-world">WORLD</a>
           <a href="#" onclick="switchPage('characters'); return false;" id="nav-characters">CHARACTERS</a>
@@ -326,7 +325,7 @@
           <a href="#" onclick="switchPage('notice'); return false;" id="nav-notice">NOTICE</a>
         </nav>
 
-        <!-- 맨 아래로 내려간 외부 링크 버튼 -->
+        <!-- 맨 아래 하단 외부 링크 버튼 -->
         <div class="external-signal-bottom">
           <div class="ext-buttons">
             <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
