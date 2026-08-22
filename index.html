@@ -98,7 +98,7 @@
       position: relative;
     }
 
-    /* 좌측 BACK 버튼 (시그널 온라인과 대칭) */
+    /* 좌측 BACK 버튼 (기본 숨김, 세부 페이지 진입 시 노출) */
     .back-btn {
       position: absolute;
       left: 0;
@@ -109,6 +109,10 @@
       letter-spacing: 0.05em;
       opacity: 0.8;
       transition: opacity 0.2s;
+      display: none; 
+    }
+    .back-btn.show {
+      display: block;
     }
     .back-btn:hover { opacity: 1; }
     
@@ -139,12 +143,11 @@
       animation: twinkle 1.5s infinite ease-in-out;
     }
 
-    /* 공통 서브 네비게이션 바 (상단 바 아래) */
     .sub-navbar {
       background: rgba(236, 168, 185, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
-      display: none; /* SIGNAL 홈에서는 숨김 처리 */
+      display: none;
     }
     .sub-navbar.show { display: block; }
     
@@ -196,7 +199,7 @@
     .hero-visual-wrapper {
       position: relative;
       width: min(650px, 90vw);
-      margin-top: 100px; 
+      margin-top: 60px; 
       display: flex;
       justify-content: center;
       align-items: center;
@@ -226,7 +229,7 @@
     .main-navlinks {
       display: flex; gap: 28px;
       font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
-      margin-top: 100px;
+      margin-top: 60px;
     }
     .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
     .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
@@ -235,6 +238,33 @@
       width: 0; height: 1.5px; background: var(--navy); transition: 0.25s;
     }
     .main-navlinks a:hover::after, .main-navlinks a.active::after { width: 100%; }
+
+    /* BGM PLAYER */
+    .bgm-player-bar {
+      margin-top: 24px;
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid var(--navy);
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      box-shadow: var(--shadow);
+    }
+    .bgm-play-btn {
+      background: var(--navy);
+      color: var(--pink);
+      border: none;
+      padding: 4px 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+    .bgm-play-btn:hover { opacity: 0.85; }
+    .bgm-info { display: flex; align-items: center; gap: 6px; }
+    .bgm-status { opacity: 0.6; font-size: 10px; }
 
     /* 외부 링크 버튼 */
     .external-signal-bottom {
@@ -261,7 +291,6 @@
     }
     .section-note { font: 10px var(--mono); text-align: right; opacity: 0.75; line-height: 1.6; }
 
-    /* 동적 데이터 로드용 빈 영역 */
     .empty-content-box {
       border: 1.5px dashed var(--navy);
       padding: 80px 20px;
@@ -295,9 +324,13 @@
     }
     .top-btn:hover { opacity: 0.7; }
 
+    #yt-player-container {
+      position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none;
+    }
+
     @media (max-width: 768px) {
       .status { display: none; }
-      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 50px; }
+      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 40px; }
       .sub-navlinks { gap: 16px; font-size: 10px; }
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .section-note { text-align: left; }
@@ -308,11 +341,15 @@
 
 <body>
 
-  <!-- 고정 상단 레이아웃 (헤더 + 서브 네비바) -->
+  <div id="yt-player-container">
+    <div id="yt-player"></div>
+  </div>
+
+  <!-- 고정 상단 레이아웃 -->
   <div class="sticky-header-group">
     <header>
       <div class="container nav">
-        <a href="#" class="back-btn" onclick="switchPage('signal'); return false;">◀ BACK</a>
+        <a href="#" class="back-btn" id="back-btn" onclick="switchPage('signal'); return false;">◀ BACK</a>
         <a class="brand" href="#" onclick="switchPage('signal'); return false;">
           <span class="star-icon">✦</span> EXTERNAL SIGNAL <span class="star-icon">✦</span>
         </a>
@@ -320,7 +357,6 @@
       </div>
     </header>
 
-    <!-- 2번 항목: 상단 바 아래 공통 목록 바 -->
     <nav class="sub-navbar" id="sub-navbar">
       <div class="container sub-navlinks">
         <a href="#" onclick="switchPage('world'); return false;" id="sub-nav-world">WORLD</a>
@@ -352,6 +388,14 @@
           <a href="#" onclick="switchPage('notice'); return false;">NOTICE</a>
         </nav>
 
+        <div class="bgm-player-bar">
+          <button class="bgm-play-btn" id="bgm-toggle-btn" onclick="toggleBgm()">PLAY ▶</button>
+          <div class="bgm-info">
+            <span>이예린 - 사람은 이상하고 사랑은 모르겠어</span>
+            <span class="bgm-status" id="bgm-status-text">(PAUSED)</span>
+          </div>
+        </div>
+
         <div class="external-signal-bottom">
           <div class="ext-buttons">
             <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
@@ -374,8 +418,6 @@
         </div>
         <p class="section-note">places, eras and settings<br>where the stories exist.</p>
       </div>
-
-      <!-- 동적 포스팅 컨테이너 (비워둠) -->
       <div id="world-list-container">
         <div class="empty-content-box">NO POSTS YET / WAITING FOR DATA</div>
       </div>
@@ -390,8 +432,6 @@
         </div>
         <p class="section-note">selected records<br>from the archive.</p>
       </div>
-
-      <!-- 동적 포스팅 컨테이너 (비워둠) -->
       <div id="character-list-container">
         <div class="empty-content-box">NO CHARACTERS RECORDED</div>
       </div>
@@ -406,8 +446,6 @@
         </div>
         <p class="section-note">songs connected to<br>characters and worlds.</p>
       </div>
-
-      <!-- 동적 포스팅 컨테이너 (비워둠) -->
       <div id="music-list-container">
         <div class="empty-content-box">NO MUSIC TRACKS ADDED</div>
       </div>
@@ -422,8 +460,6 @@
         </div>
         <p class="section-note">latest fragments<br>and daily logs.</p>
       </div>
-
-      <!-- 동적 포스팅 컨테이너 (비워둠) -->
       <div id="feed-list-container">
         <div class="empty-content-box">NO FEED LOGS YET</div>
       </div>
@@ -438,8 +474,6 @@
         </div>
         <p class="section-note">archive updates &amp;<br>announcements.</p>
       </div>
-
-      <!-- 동적 포스팅 컨테이너 (비워둠) -->
       <div id="notice-list-container">
         <div class="empty-content-box">NO ANNOUNCEMENTS</div>
       </div>
@@ -447,7 +481,6 @@
 
   </main>
 
-  <!-- 슬림 푸터 -->
   <footer class="slim-footer">
     <div class="container footer-content">
       <span class="footer-copy">© ruroon._.g</span>
@@ -456,26 +489,81 @@
     </div>
   </footer>
 
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script>
-    function switchPage(pageId) {
-      // 1. 모든 섹션 숨기기
-      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
+    let player;
+    let isPlaying = false;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('yt-player', {
+        height: '0',
+        width: '0',
+        videoId: '67QfTqSLSoI',
+        playerVars: {
+          'autoplay': 0,
+          'controls': 0,
+          'loop': 1,
+          'playlist': '67QfTqSLSoI'
+        },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+
+    function toggleBgm() {
+      if(!player) return;
       
-      // 2. 서브 네비바 활성화 상태 초기화
+      const btn = document.getElementById('bgm-toggle-btn');
+      const statusText = document.getElementById('bgm-status-text');
+
+      if(isPlaying) {
+        player.pauseVideo();
+        btn.innerText = "PLAY ▶";
+        statusText.innerText = "(PAUSED)";
+        isPlaying = false;
+      } else {
+        player.playVideo();
+        btn.innerText = "PAUSE ❚❚";
+        statusText.innerText = "(PLAYING)";
+        isPlaying = true;
+      }
+    }
+
+    function onPlayerStateChange(event) {
+      const btn = document.getElementById('bgm-toggle-btn');
+      const statusText = document.getElementById('bgm-status-text');
+
+      if (event.data === YT.PlayerState.PLAYING) {
+        isPlaying = true;
+        btn.innerText = "PAUSE ❚❚";
+        statusText.innerText = "(PLAYING)";
+      } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+        isPlaying = false;
+        btn.innerText = "PLAY ▶";
+        statusText.innerText = "(PAUSED)";
+      }
+    }
+
+    function switchPage(pageId) {
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
       document.querySelectorAll('.sub-navlinks a').forEach(a => a.classList.remove('active'));
 
-      // 3. 해당 페이지 노출
       const targetPage = document.getElementById('page-' + pageId);
       if(targetPage) {
         targetPage.classList.add('active-page');
       }
 
-      // 4. 서브 네비바 컨트롤 (SIGNAL 화면에서는 서브바 숨김)
       const subNavbar = document.getElementById('sub-navbar');
+      const backBtn = document.getElementById('back-btn');
+
+      // SIGNAL 홈일 때는 BACK 버튼과 서브 네비바 모두 숨김
       if (pageId === 'signal') {
         subNavbar.classList.remove('show');
+        backBtn.classList.remove('show');
       } else {
         subNavbar.classList.add('show');
+        backBtn.classList.add('show');
         const activeSubNav = document.getElementById('sub-nav-' + pageId);
         if(activeSubNav) {
           activeSubNav.classList.add('active');
