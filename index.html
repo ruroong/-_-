@@ -30,6 +30,8 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+    
+    /* A03.png 커서 적용 */
     body {
       background: var(--pink);
       color: var(--navy);
@@ -37,6 +39,11 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
+      cursor: url('./images/A03.png'), auto;
+    }
+
+    a, button, .world-card {
+      cursor: url('./images/A03.png'), pointer;
     }
 
     /* 도트 패턴 오버레이 */
@@ -52,17 +59,9 @@
     }
 
     a { color: inherit; text-decoration: none; }
-    button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; }
+    button { font: inherit; color: inherit; border: none; background: none; }
     .container { width: min(1180px, calc(100% - 42px)); margin: auto; }
     .mono { font-family: var(--mono); }
-
-    /* 화면 모서리 테두리 포인트 */
-    .corner {
-      position: fixed; width: 48px; height: 48px;
-      border: 1.5px solid var(--navy); opacity: 0.6; pointer-events: none; z-index: 30;
-    }
-    .corner.tl { left: 16px; top: 16px; border-right: 0; border-bottom: 0; }
-    .corner.br { right: 16px; bottom: 16px; border-left: 0; border-top: 0; }
 
     /* ANIMATIONS */
     @keyframes float {
@@ -70,7 +69,6 @@
       50% { transform: translateY(-10px); }
     }
 
-    /* 궤도 흔들림 각도를 1/3(-2deg~2deg)로 축소 */
     @keyframes orbit-tilt {
       0% {
         transform: translate(-50%, -55%) rotate(-2deg);
@@ -97,24 +95,43 @@
     }
     .nav {
       height: 70px;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       align-items: center;
+      gap: 6px;
+      position: relative;
     }
-    .brand { font-weight: 800; font-size: 18px; letter-spacing: -0.05em; }
-    .brand span { font-family: var(--mono); font-size: 12px; opacity: 0.8; }
+    /* 중앙에 위치한 EXTERNAL SIGNAL 브랜드 로고 */
+    .brand { 
+      font-weight: 800; 
+      font-size: 15px; 
+      letter-spacing: 0.15em; 
+      font-family: var(--mono);
+      text-transform: uppercase;
+    }
     .navlinks {
       display: flex; gap: 24px;
       font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
     }
-    .navlinks a { position: relative; padding: 6px 0; opacity: 0.75; transition: 0.2s; }
+    .navlinks a { position: relative; padding: 2px 0; opacity: 0.75; transition: 0.2s; }
     .navlinks a:hover, .navlinks a.active { opacity: 1; font-weight: 500; }
     .navlinks a::after {
       content: ""; position: absolute; left: 0; bottom: 0;
       width: 0; height: 1.5px; background: var(--navy); transition: 0.25s;
     }
     .navlinks a:hover::after, .navlinks a.active::after { width: 100%; }
-    .status { justify-self: end; display: flex; align-items: center; gap: 8px; font: 11px var(--mono); }
+    
+    .status { 
+      position: absolute; 
+      right: 0; 
+      top: 50%; 
+      transform: translateY(-50%); 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      font: 11px var(--mono); 
+    }
     .status i {
       width: 7px; height: 7px; border-radius: 50%; background: var(--navy);
       animation: twinkle 1.5s infinite ease-in-out;
@@ -128,6 +145,7 @@
     .hero {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       min-height: 70vh; text-align: center; position: relative;
+      margin-top: -40px; /* 비주얼 영역 전체 40px 위로 이동 */
     }
     
     .hero-visual-wrapper {
@@ -148,7 +166,6 @@
       animation: float 4s infinite ease-in-out;
     }
 
-    /* 궤도 레이어를 최상단(z-index: 3)으로 이동 */
     .orbit-bg-img {
       position: absolute;
       width: 125%;
@@ -161,8 +178,7 @@
       animation: orbit-tilt 6s infinite ease-in-out;
     }
 
-    .external-signal { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .ext-title { font: 10px var(--mono); letter-spacing: 0.2em; opacity: 0.7; }
+    .external-signal { margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
     .ext-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .ext-btn {
       background: var(--white); border: 1.5px solid var(--navy);
@@ -186,7 +202,7 @@
     .world-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
     .world-card {
       background: var(--white); border: 1.5px solid var(--navy); padding: 24px;
-      box-shadow: var(--shadow); position: relative; transition: 0.25s; cursor: pointer;
+      box-shadow: var(--shadow); position: relative; transition: 0.25s;
     }
     .world-card:hover { transform: translateY(-4px); }
     .world-num { font: 10px var(--mono); opacity: 0.5; }
@@ -259,7 +275,7 @@
     }
 
     @media (max-width: 768px) {
-      .nav { grid-template-columns: 1fr; height: auto; padding: 12px 0; gap: 10px; }
+      .nav { height: auto; padding: 12px 0; gap: 10px; }
       .status { display: none; }
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .section-note { text-align: left; }
@@ -270,13 +286,11 @@
 </head>
 
 <body>
-  <div class="corner tl"></div>
-  <div class="corner br"></div>
 
   <!-- HEADER -->
   <header>
     <div class="container nav">
-      <a class="brand" href="#" onclick="switchPage('signal'); return false;">ruroon<span>._.g</span></a>
+      <a class="brand" href="#" onclick="switchPage('signal'); return false;">EXTERNAL SIGNAL</a>
       <nav class="navlinks">
         <a href="#" onclick="switchPage('world'); return false;" id="nav-world">world</a>
         <a href="#" onclick="switchPage('characters'); return false;" id="nav-characters">characters</a>
@@ -301,7 +315,6 @@
         </div>
 
         <div class="external-signal">
-          <span class="ext-title">EXTERNAL SIGNAL</span>
           <div class="ext-buttons">
             <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
               <span>OPEN KAKAO</span> ↗
