@@ -41,7 +41,7 @@
       cursor: url('./images/A03.png') 10 10, auto;
     }
 
-    a, button, .world-card, .progress-bar-container {
+    a, button, .world-card, .progress-bar-container, .volume-slider {
       cursor: url('./images/A03.png') 10 10, pointer;
     }
 
@@ -234,7 +234,7 @@
     .hero-visual-wrapper {
       position: relative;
       width: min(650px, 90vw);
-      margin-top: 100px; /* 메인 이미지 포함 전체 영역 60px 하단 이동 (40px -> 100px) */
+      margin-top: 100px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -267,7 +267,7 @@
 
     /* 네비게이션과 플레이어 간격 */
     .player-minimal {
-      width: min(340px, 85vw);
+      width: min(360px, 88vw);
       margin-top: 100px;
       display: flex;
       flex-direction: column;
@@ -339,13 +339,20 @@
       top: -3px;
     }
 
-    /* 컨트롤 버튼 */
-    .player-controls {
+    /* 컨트롤 버튼 & 볼륨 조절 레이아웃 */
+    .player-controls-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 32px;
+      gap: 20px;
+      width: 100%;
       margin-top: 4px;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
 
     .ctrl-btn {
@@ -363,6 +370,66 @@
     .ctrl-btn.play-main {
       font-size: 16px;
       font-weight: bold;
+    }
+
+    /* 단색 SVG 볼륨 제어 영역 */
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .volume-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.85;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .volume-btn:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .speaker-svg {
+      width: 15px;
+      height: 15px;
+      fill: var(--navy);
+    }
+
+    /* 볼륨 슬라이더 커스텀 */
+    .volume-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 65px;
+      height: 3px;
+      background: rgba(28, 32, 56, 0.25);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--navy);
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    .volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .volume-slider::-moz-range-thumb {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: none;
+      cursor: pointer;
     }
 
     /* 하단 버튼 간격 */
@@ -533,11 +600,24 @@
             </div>
           </div>
 
-          <!-- 컨트롤 버튼 -->
-          <div class="player-controls">
-            <button class="ctrl-btn" onclick="restartTrack()">⏮</button>
-            <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
-            <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
+          <!-- 컨트롤 및 볼륨 영역 -->
+          <div class="player-controls-wrapper">
+            <div class="player-controls">
+              <button class="ctrl-btn" onclick="restartTrack()">⏮</button>
+              <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
+              <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
+            </div>
+
+            <!-- 단색 SVG 스피커 + 슬라이더 -->
+            <div class="volume-control">
+              <button class="volume-btn" id="volume-btn" onclick="toggleMute()">
+                <!-- 오른쪽을 향하는 단색 스피커 SVG -->
+                <svg id="speaker-icon" class="speaker-svg" viewBox="0 0 24 24">
+                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+              </button>
+              <input type="range" class="volume-slider" id="volume-range" min="0" max="100" value="30" oninput="changeVolume(this.value)">
+            </div>
           </div>
 
         </div>
@@ -640,6 +720,12 @@
     let player;
     let isPlaying = false;
     let progressTimer = null;
+    let currentVolume = 30; // 기본 시작 볼륨 30%
+    let isMuted = false;
+
+    // SVG 스피커 경로 정의
+    const svgSpeakerOn = `<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
+    const svgSpeakerMute = `<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>`;
 
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('yt-player', {
@@ -653,9 +739,14 @@
           'playlist': '67QfTqSLSoI'
         },
         events: {
+          'onReady': onPlayerReady,
           'onStateChange': onPlayerStateChange
         }
       });
+    }
+
+    function onPlayerReady(event) {
+      player.setVolume(currentVolume);
     }
 
     function toggleBgm() {
@@ -670,6 +761,44 @@
     function restartTrack() {
       if(!player) return;
       player.seekTo(0);
+    }
+
+    function changeVolume(val) {
+      currentVolume = val;
+      if (!player) return;
+      player.setVolume(val);
+
+      const speakerIcon = document.getElementById('speaker-icon');
+      if (val == 0) {
+        isMuted = true;
+        speakerIcon.innerHTML = svgSpeakerMute;
+      } else {
+        isMuted = false;
+        speakerIcon.innerHTML = svgSpeakerOn;
+        if (player.isMuted()) {
+          player.unMute();
+        }
+      }
+    }
+
+    function toggleMute() {
+      if (!player) return;
+      const speakerIcon = document.getElementById('speaker-icon');
+      const volumeRange = document.getElementById('volume-range');
+
+      if (isMuted) {
+        player.unMute();
+        isMuted = false;
+        if(currentVolume == 0) currentVolume = 30;
+        player.setVolume(currentVolume);
+        volumeRange.value = currentVolume;
+        speakerIcon.innerHTML = svgSpeakerOn;
+      } else {
+        player.mute();
+        isMuted = true;
+        volumeRange.value = 0;
+        speakerIcon.innerHTML = svgSpeakerMute;
+      }
     }
 
     function updateProgressBar() {
