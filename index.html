@@ -134,11 +134,11 @@
       min-height: calc(100vh - 120px); text-align: center; position: relative;
     }
     
-    /* 비주얼 위치 60px 하향 조정 (margin-top: 0px) */
+    /* 기존 대비 100px 아래로 배치 */
     .hero-visual-wrapper {
       position: relative;
       width: min(650px, 90vw);
-      margin-top: 0px; 
+      margin-top: 100px; 
       display: flex;
       justify-content: center;
       align-items: center;
@@ -165,11 +165,11 @@
       animation: orbit-tilt 6s infinite ease-in-out;
     }
 
-    /* 이미지와의 간격을 50px로 확대 */
+    /* 메뉴와의 여백을 50px 더 늘려 총 100px로 설정 */
     .main-navlinks {
       display: flex; gap: 28px;
       font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
-      margin-top: 50px;
+      margin-top: 100px;
     }
     .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
     .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
@@ -182,6 +182,7 @@
     /* 외부 링크 버튼 */
     .external-signal-bottom {
       margin-top: auto;
+      padding-top: 40px;
       padding-bottom: 20px;
     }
     .ext-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
@@ -281,7 +282,7 @@
 
     @media (max-width: 768px) {
       .status { display: none; }
-      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 30px; }
+      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 50px; }
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .section-note { text-align: left; }
       .footer-main { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -316,7 +317,7 @@
           <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
         </div>
 
-        <!-- 이미지 아래 간격을 확보한 메인 네비게이션 -->
+        <!-- 간격 100px 확보된 메인 네비게이션 -->
         <nav class="main-navlinks">
           <a href="#" onclick="switchPage('world'); return false;" id="nav-world">WORLD</a>
           <a href="#" onclick="switchPage('characters'); return false;" id="nav-characters">CHARACTERS</a>
