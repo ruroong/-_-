@@ -67,7 +67,20 @@
     /* ANIMATIONS */
     @keyframes float {
       0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* 궤도 비스듬히 흔들흔들 애니메이션 */
+    @keyframes orbit-tilt {
+      0% {
+        transform: translate(-50%, -55%) rotate(-6deg);
+      }
+      50% {
+        transform: translate(-50%, -55%) rotate(6deg);
+      }
+      100% {
+        transform: translate(-50%, -55%) rotate(-6deg);
+      }
     }
 
     @keyframes twinkle {
@@ -119,8 +132,8 @@
     
     .hero-visual-wrapper {
       position: relative;
-      width: min(520px, 85vw);
-      margin: 20px 0 30px;
+      width: min(650px, 90vw);
+      margin: 40px 0 20px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -132,7 +145,7 @@
       display: block;
       position: relative;
       z-index: 2;
-      animation: float 5s infinite ease-in-out;
+      animation: float 4s infinite ease-in-out;
     }
 
     .orbit-bg-img {
@@ -141,13 +154,11 @@
       height: auto;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
       z-index: 1;
       opacity: 0.85;
       pointer-events: none;
+      animation: orbit-tilt 6s infinite ease-in-out;
     }
-
-    .hero-sub { font: 11px var(--mono); margin-top: 10px; opacity: 0.8; line-height: 1.6; }
 
     .external-signal { margin-top: 40px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
     .ext-title { font: 10px var(--mono); letter-spacing: 0.2em; opacity: 0.7; }
@@ -159,7 +170,7 @@
     }
     .ext-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 0 rgba(28, 32, 56, 0.15); }
 
-    /* ---------- COMMON HEADERS (BROADWAY APPLIED) ---------- */
+    /* ---------- COMMON HEADERS ---------- */
     .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
     .section-kicker { font: 11px var(--mono); letter-spacing: 0.18em; margin-bottom: 6px; opacity: 0.7; }
     .section-title { 
@@ -282,16 +293,11 @@
     <section id="page-signal" class="page-section active-page">
       <div class="hero">
         
-        <!-- 메인 비주얼: 상대 경로 ./ 추가 -->
+        <!-- 메인 비주얼 -->
         <div class="hero-visual-wrapper">
           <img src="./images/A02.png" alt="orbit" class="orbit-bg-img">
           <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
         </div>
-
-        <p class="hero-sub">
-          characters, stories, worlds and fragments.<br>
-          a small digital cabinet created by ruroon._.g
-        </p>
 
         <div class="external-signal">
           <span class="ext-title">EXTERNAL SIGNAL</span>
