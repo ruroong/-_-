@@ -70,16 +70,16 @@
       50% { transform: translateY(-10px); }
     }
 
-    /* 궤도 비스듬히 흔들흔들 애니메이션 */
+    /* 궤도 흔들림 각도를 1/3(-2deg~2deg)로 축소 */
     @keyframes orbit-tilt {
       0% {
-        transform: translate(-50%, -55%) rotate(-6deg);
+        transform: translate(-50%, -55%) rotate(-2deg);
       }
       50% {
-        transform: translate(-50%, -55%) rotate(6deg);
+        transform: translate(-50%, -55%) rotate(2deg);
       }
       100% {
-        transform: translate(-50%, -55%) rotate(-6deg);
+        transform: translate(-50%, -55%) rotate(-2deg);
       }
     }
 
@@ -148,13 +148,14 @@
       animation: float 4s infinite ease-in-out;
     }
 
+    /* 궤도 레이어를 최상단(z-index: 3)으로 이동 */
     .orbit-bg-img {
       position: absolute;
       width: 125%;
       height: auto;
       top: 50%;
       left: 50%;
-      z-index: 1;
+      z-index: 3;
       opacity: 0.85;
       pointer-events: none;
       animation: orbit-tilt 6s infinite ease-in-out;
