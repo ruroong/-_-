@@ -31,7 +31,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     
-    /* A03.png 커서 적용 */
     body {
       background: var(--pink);
       color: var(--navy);
@@ -70,15 +69,9 @@
     }
 
     @keyframes orbit-tilt {
-      0% {
-        transform: translate(-50%, -55%) rotate(-2deg);
-      }
-      50% {
-        transform: translate(-50%, -55%) rotate(2deg);
-      }
-      100% {
-        transform: translate(-50%, -55%) rotate(-2deg);
-      }
+      0% { transform: translate(-50%, -55%) rotate(-2deg); }
+      50% { transform: translate(-50%, -55%) rotate(2deg); }
+      100% { transform: translate(-50%, -55%) rotate(-2deg); }
     }
 
     @keyframes twinkle {
@@ -94,33 +87,28 @@
       border-bottom: 1px solid var(--line);
     }
     .nav {
-      height: 70px;
+      height: 60px;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 6px;
       position: relative;
     }
-    /* 중앙에 위치한 EXTERNAL SIGNAL 브랜드 로고 */
+    
+    /* 사각별 이모지가 적용된 상단 브랜드 로고 */
     .brand { 
       font-weight: 800; 
       font-size: 15px; 
-      letter-spacing: 0.15em; 
+      letter-spacing: 0.18em; 
       font-family: var(--mono);
       text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .navlinks {
-      display: flex; gap: 24px;
-      font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+    .star-icon {
+      font-size: 13px;
+      color: var(--navy);
     }
-    .navlinks a { position: relative; padding: 2px 0; opacity: 0.75; transition: 0.2s; }
-    .navlinks a:hover, .navlinks a.active { opacity: 1; font-weight: 500; }
-    .navlinks a::after {
-      content: ""; position: absolute; left: 0; bottom: 0;
-      width: 0; height: 1.5px; background: var(--navy); transition: 0.25s;
-    }
-    .navlinks a:hover::after, .navlinks a.active::after { width: 100%; }
     
     .status { 
       position: absolute; 
@@ -138,20 +126,20 @@
     }
 
     /* ---------- PAGE VIEW SYSTEM ---------- */
-    .page-section { display: none; padding: 50px 0; min-height: calc(100vh - 70px); }
+    .page-section { display: none; padding: 40px 0; min-height: calc(100vh - 60px); }
     .page-section.active-page { display: block; }
 
     /* ---------- SIGNAL (HOME) ---------- */
     .hero {
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      min-height: 70vh; text-align: center; position: relative;
-      margin-top: -40px; /* 비주얼 영역 전체 40px 위로 이동 */
+      display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      min-height: calc(100vh - 120px); text-align: center; position: relative;
     }
     
+    /* 비주얼 위치 100px 상향 조정 */
     .hero-visual-wrapper {
       position: relative;
       width: min(650px, 90vw);
-      margin: 40px 0 20px;
+      margin-top: -60px; /* 기존 대비 100px 높임 */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -178,7 +166,25 @@
       animation: orbit-tilt 6s infinite ease-in-out;
     }
 
-    .external-signal { margin-top: 30px; display: flex; flex-direction: column; align-items: center; }
+    /* 기존 버튼 위치로 배치된 메인 메뉴 */
+    .main-navlinks {
+      display: flex; gap: 28px;
+      font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
+      margin-top: 10px;
+    }
+    .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
+    .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
+    .main-navlinks a::after {
+      content: ""; position: absolute; left: 0; bottom: 0;
+      width: 0; height: 1.5px; background: var(--navy); transition: 0.25s;
+    }
+    .main-navlinks a:hover::after, .main-navlinks a.active::after { width: 100%; }
+
+    /* 맨 아래로 배치된 외부 링크 버튼 */
+    .external-signal-bottom {
+      margin-top: auto;
+      padding-bottom: 20px;
+    }
     .ext-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .ext-btn {
       background: var(--white); border: 1.5px solid var(--navy);
@@ -275,8 +281,8 @@
     }
 
     @media (max-width: 768px) {
-      .nav { height: auto; padding: 12px 0; gap: 10px; }
       .status { display: none; }
+      .main-navlinks { gap: 16px; font-size: 11px; }
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .section-note { text-align: left; }
       .footer-main { flex-direction: column; align-items: flex-start; gap: 20px; }
@@ -290,14 +296,9 @@
   <!-- HEADER -->
   <header>
     <div class="container nav">
-      <a class="brand" href="#" onclick="switchPage('signal'); return false;">EXTERNAL SIGNAL</a>
-      <nav class="navlinks">
-        <a href="#" onclick="switchPage('world'); return false;" id="nav-world">world</a>
-        <a href="#" onclick="switchPage('characters'); return false;" id="nav-characters">characters</a>
-        <a href="#" onclick="switchPage('music'); return false;" id="nav-music">music</a>
-        <a href="#" onclick="switchPage('feed'); return false;" id="nav-feed">feed</a>
-        <a href="#" onclick="switchPage('notice'); return false;" id="nav-notice">notice</a>
-      </nav>
+      <a class="brand" href="#" onclick="switchPage('signal'); return false;">
+        <span class="star-icon">✦</span> EXTERNAL SIGNAL <span class="star-icon">✦</span>
+      </a>
       <div class="status"><i></i> SIGNAL ONLINE</div>
     </div>
   </header>
@@ -308,13 +309,25 @@
     <section id="page-signal" class="page-section active-page">
       <div class="hero">
         
-        <!-- 메인 비주얼 -->
+        <div></div> <!-- 상단 여백 밸런스용 -->
+
+        <!-- 메인 비주얼 (100px 위로 배치) -->
         <div class="hero-visual-wrapper">
           <img src="./images/A02.png" alt="orbit" class="orbit-bg-img">
           <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
         </div>
 
-        <div class="external-signal">
+        <!-- 이미지 바로 아래로 이동한 메인 네비게이션 -->
+        <nav class="main-navlinks">
+          <a href="#" onclick="switchPage('world'); return false;" id="nav-world">WORLD</a>
+          <a href="#" onclick="switchPage('characters'); return false;" id="nav-characters">CHARACTERS</a>
+          <a href="#" onclick="switchPage('music'); return false;" id="nav-music">MUSIC</a>
+          <a href="#" onclick="switchPage('feed'); return false;" id="nav-feed">FEED</a>
+          <a href="#" onclick="switchPage('notice'); return false;" id="nav-notice">NOTICE</a>
+        </nav>
+
+        <!-- 맨 아래로 내려간 외부 링크 버튼 -->
+        <div class="external-signal-bottom">
           <div class="ext-buttons">
             <a href="https://open.kakao.com/" target="_blank" class="ext-btn">
               <span>OPEN KAKAO</span> ↗
@@ -324,6 +337,7 @@
             </a>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -502,7 +516,7 @@
   <script>
     function switchPage(pageId) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active-page'));
-      document.querySelectorAll('.navlinks a').forEach(a => a.classList.remove('active'));
+      document.querySelectorAll('.main-navlinks a').forEach(a => a.classList.remove('active'));
 
       const targetPage = document.getElementById('page-' + pageId);
       if(targetPage) {
