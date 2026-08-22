@@ -79,6 +79,12 @@
       50% { opacity: 1; transform: scale(1.2); }
     }
 
+    /* 사운드파 애니메이션 */
+    @keyframes sound-wave {
+      0%, 100% { height: 4px; }
+      50% { height: 20px; }
+    }
+
     /* ---------- HEADER & STICKY NAV ---------- */
     .sticky-header-group {
       position: sticky; top: 0; z-index: 15;
@@ -196,7 +202,7 @@
     .hero-visual-wrapper {
       position: relative;
       width: min(650px, 90vw);
-      margin-top: 60px; 
+      margin-top: 40px; 
       display: flex;
       justify-content: center;
       align-items: center;
@@ -213,10 +219,11 @@
       animation: orbit-tilt 6s infinite ease-in-out;
     }
 
+    /* 메인 타이틀과 네비게이션 간격 확대 (100px) */
     .main-navlinks {
-      display: flex; gap: 28px;
-      font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
-      margin-top: 50px;
+      display: flex; gap: 36px;
+      font-family: var(--mono); font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em;
+      margin-top: 100px;
     }
     .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
     .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
@@ -226,15 +233,53 @@
     }
     .main-navlinks a:hover::after, .main-navlinks a.active::after { width: 100%; }
 
-    /* ---------- MINIMAL BGM PLAYER ---------- */
+    /* 네비게이션과 플레이어 간격 확대 (100px) */
     .player-minimal {
-      width: min(320px, 80vw);
-      margin-top: 24px;
+      width: min(340px, 85vw);
+      margin-top: 100px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
     }
+
+    /* 사운드 웨이브 비주얼라이저 */
+    .sound-wave-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      height: 22px;
+      margin-bottom: 4px;
+    }
+
+    .wave-bar {
+      width: 3px;
+      height: 4px;
+      background-color: var(--navy);
+      border-radius: 2px;
+      opacity: 0.8;
+    }
+
+    /* 음악 재생 시 적용되는 애니메이션 속도 및 지연 */
+    .playing .wave-bar {
+      animation: sound-wave 1.2s infinite ease-in-out;
+    }
+    .playing .wave-bar:nth-child(1) { animation-delay: 0.1s; }
+    .playing .wave-bar:nth-child(2) { animation-delay: 0.4s; }
+    .playing .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+    .playing .wave-bar:nth-child(4) { animation-delay: 0.6s; }
+    .playing .wave-bar:nth-child(5) { animation-delay: 0.3s; }
+    .playing .wave-bar:nth-child(6) { animation-delay: 0.8s; }
+    .playing .wave-bar:nth-child(7) { animation-delay: 0.5s; }
+    .playing .wave-bar:nth-child(8) { animation-delay: 0.2s; }
+    .playing .wave-bar:nth-child(9) { animation-delay: 0.7s; }
+    .playing .wave-bar:nth-child(10) { animation-delay: 0.3s; }
+    .playing .wave-bar:nth-child(11) { animation-delay: 0.9s; }
+    .playing .wave-bar:nth-child(12) { animation-delay: 0.4s; }
+    .playing .wave-bar:nth-child(13) { animation-delay: 0.1s; }
+    .playing .wave-bar:nth-child(14) { animation-delay: 0.5s; }
+    .playing .wave-bar:nth-child(15) { animation-delay: 0.3s; }
 
     /* 프로그레스 바 */
     .progress-bar-container {
@@ -263,12 +308,13 @@
       top: -3px;
     }
 
-    /* 컨트롤 버튼 (이전곡 / 재생·일시정지 / 다음곡) */
+    /* 컨트롤 버튼 */
     .player-controls {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 28px;
+      gap: 32px;
+      margin-top: 4px;
     }
 
     .ctrl-btn {
@@ -288,10 +334,10 @@
       font-weight: bold;
     }
 
-    /* 외부 링크 버튼 */
+    /* 하단 버튼 간격 */
     .external-signal-bottom {
       margin-top: auto;
-      padding-top: 30px;
+      padding-top: 50px;
       padding-bottom: 20px;
     }
     .ext-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
@@ -352,7 +398,8 @@
 
     @media (max-width: 768px) {
       .status { display: none; }
-      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 35px; }
+      .main-navlinks { gap: 18px; font-size: 11px; margin-top: 60px; }
+      .player-minimal { margin-top: 60px; }
       .sub-navlinks { gap: 16px; font-size: 10px; }
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .section-note { text-align: left; }
@@ -401,6 +448,7 @@
           <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
         </div>
 
+        <!-- 메인 네비게이션 링크 -->
         <nav class="main-navlinks">
           <a href="#" onclick="switchPage('world'); return false;">WORLD</a>
           <a href="#" onclick="switchPage('characters'); return false;">CHARACTERS</a>
@@ -409,8 +457,28 @@
           <a href="#" onclick="switchPage('notice'); return false;">NOTICE</a>
         </nav>
 
-        <!-- 미니멀 플레이어 바 (바 + 컨트롤 3개만 남김) -->
+        <!-- 미니멀 BGM 플레이어 -->
         <div class="player-minimal">
+          
+          <!-- 사운드 웨이브 비주얼라이저 -->
+          <div class="sound-wave-container" id="sound-wave">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+          </div>
+
           <!-- 프로그레스 바 -->
           <div class="progress-bar-container" id="progress-container" onclick="seekTrack(event)">
             <div class="progress-bar-fill" id="progress-fill">
@@ -424,6 +492,7 @@
             <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
             <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
           </div>
+
         </div>
 
         <div class="external-signal-bottom">
@@ -582,16 +651,19 @@
 
     function onPlayerStateChange(event) {
       const playBtn = document.getElementById('play-btn');
+      const soundWave = document.getElementById('sound-wave');
 
       if (event.data === YT.PlayerState.PLAYING) {
         isPlaying = true;
         playBtn.innerText = "❚❚";
+        soundWave.classList.add('playing'); // 파형 애니메이션 재생
         if (!progressTimer) {
           progressTimer = setInterval(updateProgressBar, 500);
         }
       } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
         isPlaying = false;
         playBtn.innerText = "▶";
+        soundWave.classList.remove('playing'); // 파형 애니메이션 멈춤
         if (progressTimer) {
           clearInterval(progressTimer);
           progressTimer = null;
