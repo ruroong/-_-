@@ -110,7 +110,7 @@
       position: relative;
     }
 
-    /* 왼쪽 별 1개가 포함된 EXTERNAL SIGNAL (BACK 버튼 대체) */
+    /* 상단 왼쪽 브랜드 텍스트 (메인/서브 모두 표시) */
     .back-brand-btn {
       position: absolute;
       left: 0;
@@ -121,13 +121,12 @@
       letter-spacing: 0.15em;
       font-family: var(--mono);
       text-transform: uppercase;
-      display: none;
+      display: flex;
       align-items: center;
       gap: 6px;
       opacity: 0.9;
       transition: opacity 0.2s;
     }
-    .back-brand-btn.show { display: flex; }
     .back-brand-btn:hover { opacity: 1; }
     
     /* 헤더 중앙 SVG 지구본 로고 */
@@ -283,7 +282,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
     }
 
     /* 사운드 웨이브 비주얼라이저 */
@@ -293,7 +292,7 @@
       justify-content: center;
       gap: 3px;
       height: 22px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .wave-bar {
@@ -350,19 +349,13 @@
       top: -3px;
     }
 
-    /* 컨트롤 버튼 & 볼륨 통합 가로 한 줄 레이아웃 */
-    .player-controls-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 4px;
-    }
-
+    /* 1줄: 재생 / 넘김 컨트롤 (기존 위치 롤백) */
     .player-controls {
       display: flex;
       align-items: center;
-      gap: 20px;
+      justify-content: center;
+      gap: 22px;
+      margin-top: 4px;
     }
 
     .ctrl-btn {
@@ -382,12 +375,13 @@
       font-weight: bold;
     }
 
-    /* 단색 SVG 볼륨 제어 영역 */
-    .volume-control {
+    /* 2줄: 볼륨 아이콘 및 슬라이더 (아랫줄로 배치) */
+    .volume-control-row {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      margin-left: 8px;
+      margin-top: 2px;
     }
 
     .volume-btn {
@@ -403,8 +397,8 @@
     }
 
     .speaker-svg {
-      width: 15px;
-      height: 15px;
+      width: 14px;
+      height: 14px;
       fill: var(--navy);
     }
 
@@ -412,7 +406,7 @@
     .volume-slider {
       -webkit-appearance: none;
       appearance: none;
-      width: 65px;
+      width: 75px;
       height: 3px;
       background: rgba(28, 32, 56, 0.25);
       border-radius: 2px;
@@ -422,8 +416,8 @@
     .volume-slider::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 9px;
-      height: 9px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--navy);
       cursor: pointer;
@@ -435,8 +429,8 @@
     }
 
     .volume-slider::-moz-range-thumb {
-      width: 9px;
-      height: 9px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--navy);
       border: none;
@@ -530,12 +524,12 @@
   <div class="sticky-header-group">
     <header>
       <div class="container nav">
-        <!-- 서브페이지 전용 : 왼쪽 별 1개 + EXTERNAL SIGNAL (BACK 대체) -->
+        <!-- 상단 왼쪽 : ✦ EXTERNAL SIGNAL (메인/서브 모두 지속 표시) -->
         <a href="#" class="back-brand-btn" id="back-brand-btn" onclick="switchPage('signal'); return false;">
           <span class="star-icon">✦</span> EXTERNAL SIGNAL
         </a>
 
-        <!-- 중앙 : 3번 이미지의 지구본 모티프 SVG 아이콘 -->
+        <!-- 상단 중앙 : 3번 이미지 아이콘 모티프 SVG -->
         <a class="header-center-logo" href="#" onclick="switchPage('signal'); return false;">
           <svg class="globe-svg" viewBox="0 0 100 50">
             <!-- 외각 타원 -->
@@ -625,23 +619,21 @@
             </div>
           </div>
 
-          <!-- 컨트롤 및 볼륨 영역 (한 줄 정렬) -->
-          <div class="player-controls-row">
-            <div class="player-controls">
-              <button class="ctrl-btn" onclick="restartTrack()">⏮</button>
-              <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
-              <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
-            </div>
+          <!-- 1줄: 기존 재생 / 넘김 컨트롤 (중앙 롤백) -->
+          <div class="player-controls">
+            <button class="ctrl-btn" onclick="restartTrack()">⏮</button>
+            <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
+            <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
+          </div>
 
-            <!-- 단색 SVG 스피커 + 볼륨 슬라이더 -->
-            <div class="volume-control">
-              <button class="volume-btn" id="volume-btn" onclick="toggleMute()">
-                <svg id="speaker-icon" class="speaker-svg" viewBox="0 0 24 24">
-                  <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                </svg>
-              </button>
-              <input type="range" class="volume-slider" id="volume-range" min="0" max="100" value="50" oninput="changeVolume(this.value)">
-            </div>
+          <!-- 2줄: 재생 넘김 버튼 아랫줄에 배치된 볼륨 아이콘 & 슬라이더 -->
+          <div class="volume-control-row">
+            <button class="volume-btn" id="volume-btn" onclick="toggleMute()">
+              <svg id="speaker-icon" class="speaker-svg" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+            </button>
+            <input type="range" class="volume-slider" id="volume-range" min="0" max="100" value="50" oninput="changeVolume(this.value)">
           </div>
 
         </div>
@@ -887,14 +879,11 @@
       }
 
       const subNavbar = document.getElementById('sub-navbar');
-      const backBrandBtn = document.getElementById('back-brand-btn');
 
       if (pageId === 'signal') {
         subNavbar.classList.remove('show');
-        backBrandBtn.classList.remove('show');
       } else {
         subNavbar.classList.add('show');
-        backBrandBtn.classList.add('show');
         const activeSubNav = document.getElementById('sub-nav-' + pageId);
         if(activeSubNav) {
           activeSubNav.classList.add('active');
