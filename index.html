@@ -110,32 +110,43 @@
       position: relative;
     }
 
-    .back-btn {
+    /* 왼쪽 별 1개가 포함된 EXTERNAL SIGNAL (BACK 버튼 대체) */
+    .back-brand-btn {
       position: absolute;
       left: 0;
       top: 50%;
       transform: translateY(-50%);
-      font: 11px var(--mono);
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      opacity: 0.8;
-      transition: opacity 0.2s;
-      display: none;
-    }
-    .back-btn.show { display: block; }
-    .back-btn:hover { opacity: 1; }
-    
-    .brand { 
-      font-weight: 800; 
-      font-size: 15px; 
-      letter-spacing: 0.18em; 
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.15em;
       font-family: var(--mono);
       text-transform: uppercase;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+    }
+    .back-brand-btn.show { display: flex; }
+    .back-brand-btn:hover { opacity: 1; }
+    
+    /* 헤더 중앙 SVG 지구본 로고 */
+    .header-center-logo {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      transition: transform 0.2s;
     }
-    .star-icon { font-size: 13px; color: var(--navy); }
+    .header-center-logo:hover {
+      transform: scale(1.05);
+    }
+    .globe-svg {
+      width: 58px;
+      height: 32px;
+      stroke: var(--navy);
+      fill: none;
+      stroke-width: 1.5;
+    }
     
     .status { 
       position: absolute; 
@@ -267,7 +278,7 @@
 
     /* 네비게이션과 플레이어 간격 */
     .player-minimal {
-      width: min(360px, 88vw);
+      width: min(340px, 85vw);
       margin-top: 100px;
       display: flex;
       flex-direction: column;
@@ -339,20 +350,19 @@
       top: -3px;
     }
 
-    /* 컨트롤 버튼 & 볼륨 조절 레이아웃 */
-    .player-controls-wrapper {
+    /* 컨트롤 버튼 & 볼륨 통합 가로 한 줄 레이아웃 */
+    .player-controls-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 20px;
-      width: 100%;
+      gap: 16px;
       margin-top: 4px;
     }
 
     .player-controls {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: 20px;
     }
 
     .ctrl-btn {
@@ -377,6 +387,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      margin-left: 8px;
     }
 
     .volume-btn {
@@ -397,7 +408,7 @@
       fill: var(--navy);
     }
 
-    /* 볼륨 슬라이더 커스텀 */
+    /* 볼륨 커스텀 슬라이더 바 */
     .volume-slider {
       -webkit-appearance: none;
       appearance: none;
@@ -519,10 +530,24 @@
   <div class="sticky-header-group">
     <header>
       <div class="container nav">
-        <a href="#" class="back-btn" id="back-btn" onclick="switchPage('signal'); return false;">◀ BACK</a>
-        <a class="brand" href="#" onclick="switchPage('signal'); return false;">
-          <span class="star-icon">✦</span> EXTERNAL SIGNAL <span class="star-icon">✦</span>
+        <!-- 서브페이지 전용 : 왼쪽 별 1개 + EXTERNAL SIGNAL (BACK 대체) -->
+        <a href="#" class="back-brand-btn" id="back-brand-btn" onclick="switchPage('signal'); return false;">
+          <span class="star-icon">✦</span> EXTERNAL SIGNAL
         </a>
+
+        <!-- 중앙 : 3번 이미지의 지구본 모티프 SVG 아이콘 -->
+        <a class="header-center-logo" href="#" onclick="switchPage('signal'); return false;">
+          <svg class="globe-svg" viewBox="0 0 100 50">
+            <!-- 외각 타원 -->
+            <ellipse cx="50" cy="25" rx="45" ry="20" />
+            <!-- 내부 세로 타원 3개 -->
+            <ellipse cx="50" cy="25" rx="30" ry="20" />
+            <!-- 중앙 세로 타원 및 가로 가이드라인 -->
+            <ellipse cx="50" cy="25" rx="14" ry="20" />
+            <line x1="5" y1="25" x2="95" y2="25" />
+          </svg>
+        </a>
+
         <div class="status"><i></i> SIGNAL ONLINE</div>
       </div>
     </header>
@@ -600,23 +625,22 @@
             </div>
           </div>
 
-          <!-- 컨트롤 및 볼륨 영역 -->
-          <div class="player-controls-wrapper">
+          <!-- 컨트롤 및 볼륨 영역 (한 줄 정렬) -->
+          <div class="player-controls-row">
             <div class="player-controls">
               <button class="ctrl-btn" onclick="restartTrack()">⏮</button>
               <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
               <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
             </div>
 
-            <!-- 단색 SVG 스피커 + 슬라이더 -->
+            <!-- 단색 SVG 스피커 + 볼륨 슬라이더 -->
             <div class="volume-control">
               <button class="volume-btn" id="volume-btn" onclick="toggleMute()">
-                <!-- 오른쪽을 향하는 단색 스피커 SVG -->
                 <svg id="speaker-icon" class="speaker-svg" viewBox="0 0 24 24">
                   <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
                 </svg>
               </button>
-              <input type="range" class="volume-slider" id="volume-range" min="0" max="100" value="30" oninput="changeVolume(this.value)">
+              <input type="range" class="volume-slider" id="volume-range" min="0" max="100" value="50" oninput="changeVolume(this.value)">
             </div>
           </div>
 
@@ -720,10 +744,10 @@
     let player;
     let isPlaying = false;
     let progressTimer = null;
-    let currentVolume = 30; // 기본 시작 볼륨 30%
+    let currentVolume = 50;
     let isMuted = false;
 
-    // SVG 스피커 경로 정의
+    // 단색 SVG 아이콘 경로
     const svgSpeakerOn = `<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
     const svgSpeakerMute = `<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>`;
 
@@ -746,7 +770,9 @@
     }
 
     function onPlayerReady(event) {
-      player.setVolume(currentVolume);
+      if(player && typeof player.setVolume === 'function') {
+        player.setVolume(currentVolume);
+      }
     }
 
     function toggleBgm() {
@@ -763,38 +789,42 @@
       player.seekTo(0);
     }
 
+    /* 볼륨 조절 함수 */
     function changeVolume(val) {
-      currentVolume = val;
-      if (!player) return;
-      player.setVolume(val);
-
+      currentVolume = parseInt(val, 10);
       const speakerIcon = document.getElementById('speaker-icon');
-      if (val == 0) {
+      
+      if (player && typeof player.setVolume === 'function') {
+        player.setVolume(currentVolume);
+      }
+
+      if (currentVolume === 0) {
         isMuted = true;
         speakerIcon.innerHTML = svgSpeakerMute;
       } else {
         isMuted = false;
         speakerIcon.innerHTML = svgSpeakerOn;
-        if (player.isMuted()) {
+        if (player && typeof player.isMuted === 'function' && player.isMuted()) {
           player.unMute();
         }
       }
     }
 
+    /* 음소거 / 토글 함수 */
     function toggleMute() {
       if (!player) return;
       const speakerIcon = document.getElementById('speaker-icon');
       const volumeRange = document.getElementById('volume-range');
 
       if (isMuted) {
-        player.unMute();
+        if(typeof player.unMute === 'function') player.unMute();
         isMuted = false;
-        if(currentVolume == 0) currentVolume = 30;
-        player.setVolume(currentVolume);
+        if(currentVolume === 0) currentVolume = 50;
+        if(typeof player.setVolume === 'function') player.setVolume(currentVolume);
         volumeRange.value = currentVolume;
         speakerIcon.innerHTML = svgSpeakerOn;
       } else {
-        player.mute();
+        if(typeof player.mute === 'function') player.mute();
         isMuted = true;
         volumeRange.value = 0;
         speakerIcon.innerHTML = svgSpeakerMute;
@@ -857,14 +887,14 @@
       }
 
       const subNavbar = document.getElementById('sub-navbar');
-      const backBtn = document.getElementById('back-btn');
+      const backBrandBtn = document.getElementById('back-brand-btn');
 
       if (pageId === 'signal') {
         subNavbar.classList.remove('show');
-        backBtn.classList.remove('show');
+        backBrandBtn.classList.remove('show');
       } else {
         subNavbar.classList.add('show');
-        backBtn.classList.add('show');
+        backBrandBtn.classList.add('show');
         const activeSubNav = document.getElementById('sub-nav-' + pageId);
         if(activeSubNav) {
           activeSubNav.classList.add('active');
