@@ -6,7 +6,7 @@
   <title>ruroon._.g ARCHIVE</title>
   <meta name="description" content="ruroon._.g personal archive">
 
-  <!-- 폰트 불러오기 -->
+  <!-- 폰트 및 아이콘 불러오기 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Manrope:wght@400;500;600;700;800&family=Ultra&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
       cursor: url('./images/A03.png'), auto;
     }
 
-    a, button, .world-card {
+    a, button, .world-card, .progress-bar-container {
       cursor: url('./images/A03.png'), pointer;
     }
 
@@ -98,7 +98,7 @@
       position: relative;
     }
 
-    /* 좌측 BACK 버튼 (기본 숨김, 세부 페이지 진입 시 노출) */
+    /* BACK 버튼 (메인에서는 숨김) */
     .back-btn {
       position: absolute;
       left: 0;
@@ -109,11 +109,9 @@
       letter-spacing: 0.05em;
       opacity: 0.8;
       transition: opacity 0.2s;
-      display: none; 
+      display: none;
     }
-    .back-btn.show {
-      display: block;
-    }
+    .back-btn.show { display: block; }
     .back-btn:hover { opacity: 1; }
     
     .brand { 
@@ -206,30 +204,20 @@
     }
 
     .main-title-img {
-      width: 100%;
-      height: auto;
-      display: block;
-      position: relative;
-      z-index: 2;
+      width: 100%; height: auto; display: block; position: relative; z-index: 2;
       animation: float 4s infinite ease-in-out;
     }
 
     .orbit-bg-img {
-      position: absolute;
-      width: 125%;
-      height: auto;
-      top: 50%;
-      left: 50%;
-      z-index: 3;
-      opacity: 0.85;
-      pointer-events: none;
+      position: absolute; width: 125%; height: auto; top: 50%; left: 50%; z-index: 3;
+      opacity: 0.85; pointer-events: none;
       animation: orbit-tilt 6s infinite ease-in-out;
     }
 
     .main-navlinks {
       display: flex; gap: 28px;
       font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em;
-      margin-top: 60px;
+      margin-top: 50px;
     }
     .main-navlinks a { position: relative; padding: 4px 2px; opacity: 0.8; transition: 0.2s; font-weight: 500; }
     .main-navlinks a:hover, .main-navlinks a.active { opacity: 1; font-weight: 700; }
@@ -239,37 +227,92 @@
     }
     .main-navlinks a:hover::after, .main-navlinks a.active::after { width: 100%; }
 
-    /* BGM PLAYER */
-    .bgm-player-bar {
-      margin-top: 24px;
-      background: rgba(255, 255, 255, 0.4);
+    /* ---------- ADVANCED BGM PLAYER (참고 이미지 스타일 반영) ---------- */
+    .player-card {
+      width: min(420px, 90vw);
+      margin-top: 28px;
+      padding: 16px 20px;
+      background: rgba(255, 255, 255, 0.25);
       border: 1px solid var(--navy);
-      padding: 8px 18px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       gap: 12px;
-      font-family: var(--mono);
-      font-size: 11px;
       box-shadow: var(--shadow);
     }
-    .bgm-play-btn {
-      background: var(--navy);
-      color: var(--pink);
-      border: none;
-      padding: 4px 10px;
+
+    .track-info {
       font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      transition: 0.2s;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      opacity: 0.85;
     }
-    .bgm-play-btn:hover { opacity: 0.85; }
-    .bgm-info { display: flex; align-items: center; gap: 6px; }
-    .bgm-status { opacity: 0.6; font-size: 10px; }
+
+    .heart-icon {
+      font-size: 14px;
+      color: var(--navy);
+      opacity: 0.7;
+    }
+
+    /* 프로그레스 바 */
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(28, 32, 56, 0.2);
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--navy);
+      border-radius: 2px;
+      position: relative;
+      transition: width 0.1s linear;
+    }
+
+    .progress-thumb {
+      width: 10px;
+      height: 10px;
+      background: var(--navy);
+      border-radius: 50%;
+      position: absolute;
+      right: -5px;
+      top: -3px;
+    }
+
+    /* 컨트롤 버튼 그룹 */
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 80%;
+      margin-top: 2px;
+    }
+
+    .ctrl-btn {
+      font-size: 14px;
+      color: var(--navy);
+      opacity: 0.75;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .ctrl-btn:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    .ctrl-btn.play-main {
+      font-size: 18px;
+      font-weight: bold;
+      opacity: 1;
+    }
 
     /* 외부 링크 버튼 */
     .external-signal-bottom {
       margin-top: auto;
-      padding-top: 40px;
+      padding-top: 30px;
       padding-bottom: 20px;
     }
     .ext-buttons { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
@@ -330,7 +373,7 @@
 
     @media (max-width: 768px) {
       .status { display: none; }
-      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 40px; }
+      .main-navlinks { gap: 16px; font-size: 11px; margin-top: 35px; }
       .sub-navlinks { gap: 16px; font-size: 10px; }
       .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
       .section-note { text-align: left; }
@@ -345,7 +388,6 @@
     <div id="yt-player"></div>
   </div>
 
-  <!-- 고정 상단 레이아웃 -->
   <div class="sticky-header-group">
     <header>
       <div class="container nav">
@@ -380,6 +422,7 @@
           <img src="./images/A01.png" alt="ARCHIVE @ruroon._.g" class="main-title-img">
         </div>
 
+        <!-- 네비게이션 목록 -->
         <nav class="main-navlinks">
           <a href="#" onclick="switchPage('world'); return false;">WORLD</a>
           <a href="#" onclick="switchPage('characters'); return false;">CHARACTERS</a>
@@ -388,11 +431,25 @@
           <a href="#" onclick="switchPage('notice'); return false;">NOTICE</a>
         </nav>
 
-        <div class="bgm-player-bar">
-          <button class="bgm-play-btn" id="bgm-toggle-btn" onclick="toggleBgm()">PLAY ▶</button>
-          <div class="bgm-info">
-            <span>이예린 - 사람은 이상하고 사랑은 모르겠어</span>
-            <span class="bgm-status" id="bgm-status-text">(PAUSED)</span>
+        <!-- 세련된 플레이어 바 (목록 바로 아래) -->
+        <div class="player-card">
+          <div class="track-info">이예린 - 사람은 이상하고 사랑은 모르겠어</div>
+          <div class="heart-icon">♡</div>
+
+          <!-- 프로그레스 바 -->
+          <div class="progress-bar-container" id="progress-container" onclick="seekTrack(event)">
+            <div class="progress-bar-fill" id="progress-fill">
+              <div class="progress-thumb"></div>
+            </div>
+          </div>
+
+          <!-- 컨트롤 아이콘 -->
+          <div class="player-controls">
+            <button class="ctrl-btn">🔀</button>
+            <button class="ctrl-btn" onclick="restartTrack()">⏮</button>
+            <button class="ctrl-btn play-main" id="play-btn" onclick="toggleBgm()">▶</button>
+            <button class="ctrl-btn" onclick="restartTrack()">⏭</button>
+            <button class="ctrl-btn">🔁</button>
           </div>
         </div>
 
@@ -493,6 +550,7 @@
   <script>
     let player;
     let isPlaying = false;
+    let progressTimer = null;
 
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('yt-player', {
@@ -513,35 +571,58 @@
 
     function toggleBgm() {
       if(!player) return;
-      
-      const btn = document.getElementById('bgm-toggle-btn');
-      const statusText = document.getElementById('bgm-status-text');
-
       if(isPlaying) {
         player.pauseVideo();
-        btn.innerText = "PLAY ▶";
-        statusText.innerText = "(PAUSED)";
-        isPlaying = false;
       } else {
         player.playVideo();
-        btn.innerText = "PAUSE ❚❚";
-        statusText.innerText = "(PLAYING)";
-        isPlaying = true;
+      }
+    }
+
+    function restartTrack() {
+      if(!player) return;
+      player.seekTo(0);
+    }
+
+    function updateProgressBar() {
+      if (!player || !isPlaying) return;
+      const currentTime = player.getCurrentTime();
+      const duration = player.getDuration();
+      if (duration > 0) {
+        const percent = (currentTime / duration) * 100;
+        document.getElementById('progress-fill').style.width = percent + '%';
+      }
+    }
+
+    function seekTrack(event) {
+      if (!player) return;
+      const container = document.getElementById('progress-container');
+      const rect = container.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const percent = clickX / rect.width;
+      const duration = player.getDuration();
+      
+      if (duration > 0) {
+        player.seekTo(duration * percent);
+        document.getElementById('progress-fill').style.width = (percent * 100) + '%';
       }
     }
 
     function onPlayerStateChange(event) {
-      const btn = document.getElementById('bgm-toggle-btn');
-      const statusText = document.getElementById('bgm-status-text');
+      const playBtn = document.getElementById('play-btn');
 
       if (event.data === YT.PlayerState.PLAYING) {
         isPlaying = true;
-        btn.innerText = "PAUSE ❚❚";
-        statusText.innerText = "(PLAYING)";
+        playBtn.innerText = "❚❚";
+        if (!progressTimer) {
+          progressTimer = setInterval(updateProgressBar, 500);
+        }
       } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
         isPlaying = false;
-        btn.innerText = "PLAY ▶";
-        statusText.innerText = "(PAUSED)";
+        playBtn.innerText = "▶";
+        if (progressTimer) {
+          clearInterval(progressTimer);
+          progressTimer = null;
+        }
       }
     }
 
@@ -557,7 +638,6 @@
       const subNavbar = document.getElementById('sub-navbar');
       const backBtn = document.getElementById('back-btn');
 
-      // SIGNAL 홈일 때는 BACK 버튼과 서브 네비바 모두 숨김
       if (pageId === 'signal') {
         subNavbar.classList.remove('show');
         backBtn.classList.remove('show');
